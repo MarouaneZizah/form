@@ -1,0 +1,43 @@
+body{
+    height: 100vh;
+}
+
+div[data-gjs-type="text"] {
+    color: unset;
+}
+
+div {
+    color: unset;
+}
+
+.form-components {
+    min-height: 100px;
+}
+
+.column.box {
+    min-height: 10px;
+}
+
+.container {
+    min-height: 600px;
+}
+
+.container.box.hide,
+.hide {
+    display: none;
+}
+
+.form-layout {
+    max-width: none!important
+}
+
+.ct-obligatoire {
+    width: 98%!important
+}
+
+.ct-obligatoire-container::after {
+    content: "*";
+    color: red;
+    float: right;
+    font-size: 1.1em;
+}

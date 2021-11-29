@@ -1,0 +1,48 @@
+<?php
+	session_start();
+
+	require_once( explode( "wp-content" , __FILE__ )[0] . "wp-load.php" );
+	include_once( ABSPATH . 'wp-includes/pluggable.php' );
+
+	// error_reporting(1);
+	// ini_set('display_errors', '1');
+	// ini_set('display_startup_errors', '1');
+	// error_reporting(E_ALL);
+
+	$method = $_SERVER['REQUEST_METHOD'];
+
+	switch ($method) {
+		case 'POST':
+			$name    	= sanitize_text_field( $_POST["full_name"] );
+			$email   	= sanitize_email( $_POST["email"] );
+			$telephone 	= sanitize_text_field( $_POST["phone"] );
+
+			$subject = "New contact";
+			$to 	 = get_option( 'admin_email' );
+			$headers = "From: $name <$email>" . "\r\n";
+
+			$message = "
+			Full Name : ".sanitize_text_field( $_POST["full_name"] )."</br>
+			Email : ".sanitize_text_field( $_POST["email"] )."</br>
+			ZIP : ".sanitize_text_field( $_POST["zip"] )."</br>
+			Phone : ".sanitize_text_field( $_POST["phone"] )."</br>
+			Situation : ".sanitize_text_field( $_POST["own_state"] )."</br>
+			Mode : ".sanitize_text_field( $_POST["chauffage"] )."</br>
+			Type Logement : ".sanitize_text_field( $_POST["type_habitation"] )."</br>
+			";
+
+			// If email has been process for sending, display a success message
+			if ( wp_mail($to, $subject, $message, $headers ) ) {
+				echo "<div><p>Thanks for contacting me, expect a response soon.</p></div>";
+			} else {
+				echo 'An unexpected error occurred';
+			}
+
+			break;
+
+		default:
+			echo "Methode not supported";
+
+			break;
+	}
+?>

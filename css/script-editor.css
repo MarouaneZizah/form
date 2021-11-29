@@ -1,0 +1,87 @@
+html, body {
+    height: 100%
+}
+
+html {
+    overflow-y: visible;
+}
+
+/* Let's highlight canvas boundaries */
+#gjs {
+    border: 3px solid #444;
+}
+
+.gjs-block {
+    height: auto;
+    min-height: auto;
+}
+
+.editor-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    height: 100vh;
+}
+
+.editor-canvas {
+    flex-grow: 1;
+}
+
+.gjs-title,
+.gjs-layer-title,
+.gjs-layer-title *,
+.gjs-sm-title,
+.gjs-sm-label {
+    color: #ddd !important;
+    font-weight: 800 !important;
+}
+
+.gjs-trt-traits {
+    font-weight: 800;
+}
+
+.gjs-block__media {
+    margin-bottom: 0;
+}
+
+.gjs-block__media svg {
+    height: 45px
+}
+
+.gjs-rte-action,
+.gjs-input-unit {
+    color: #ddd !important;
+}
+
+.fa-arrows:before {
+    content: "\f0b2";
+}
+
+.fa-square-o:before {
+    content: "\f0c8";
+}
+
+.fa-trash-o:before {
+    content: "\f1f8";
+}
+
+.fa-map-o:before {
+    content: "\f279";
+}
+
+.fa-youtube-play:before {
+    content: "\f04b";
+}
+
+.fa-chevron-right:before {
+    content: "\f054";
+}
+
+.fa-chevron-down:before {
+    content: "\f078";
+}
+
+.gjs-pn-btn {
+    color: #fff;
+}
