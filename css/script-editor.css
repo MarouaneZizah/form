@@ -22,6 +22,7 @@ html {
     align-items: stretch;
     flex-wrap: nowrap;
     height: 100vh;
+    width: 100%;
 }
 
 .editor-canvas {
