@@ -275,8 +275,38 @@ add_shortcode( 'mz_contact_form', 'cf_shortcode' );
 
 
 function getFormsList() {
-	echo "Forms list";
-    echo "<h1>[mz_contact_form]</h1>";
+
+    $forms = get_posts([
+        'post_type'   => 'game_form',
+        'post_status' => 'draft',
+    ]);
+
+    echo "Forms list";
+
+    echo '
+        <table>
+            <thead>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Statut</th>
+                <th>Created at</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>';
+    foreach ($forms as $form) {
+        echo '<tr>';
+        echo '<td>'.$form->ID.'</td>';
+        echo '<td>'.$form->post_title.'</td>';
+        echo '<td>'.$form->post_status.'</td>';
+        echo '<td>'.$form->post_date.'</td>';
+        echo '<td>
+                <a href="/wp-admin/admin.php?page=form%2Fform.php&id='. $form->ID .'" target="_blank">Open</a>
+                <a href="/wp-content/plugins/form/render.php?id='. $form->ID .'" target="_blank">Preview</a>
+            </td>';
+        echo '</td>';
+    }
+    echo '</tbody>';
+    echo'</table>';
 }
 
 function add_form_menu(){

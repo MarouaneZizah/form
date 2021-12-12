@@ -27,6 +27,10 @@ div {
     display: none;
 }
 
+.step-container {
+    min-height: 100px;
+}
+
 .form-layout {
     max-width: none!important
 }

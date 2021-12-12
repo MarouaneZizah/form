@@ -2,10 +2,14 @@
 echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/fontawesome/css/all.min.css">';
 echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/bulma.css">';
 echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/grapes.min.css">';
+//echo '<link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">';
 echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/script-editor.css">';
 
 echo '<script src="'.plugin_dir_url(__FILE__).'js/axios.min.js"></script>';
 echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
+//echo '<script src="https://unpkg.com/grapesjs"></script>';
+
+
 ?>
 
 <div class="editor-row">
@@ -14,6 +18,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             <?php
             echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/bulma.css">';
             echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/script.css">';
+            echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/form.css">';
             ?>
 
             <div class="container box"></div>
@@ -29,7 +34,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
     let colonnes_ct = [];
 
     const typeCadre = 'cadre';
-    const typeForm = 'Formulaire';
+    const typeStepContainer = 'step-container';
     const typeCadre1Col = 'cadre-one-col';
     const typeCadre2Col = 'cadre-two-col';
     const typeCadre3Col = 'cadre-three-col';
@@ -37,7 +42,6 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
     const typeCadre3_9Col = 'cadre-three-nine-col';
     const typeCadre9_3Col = 'cadre-nine-three-col';
     const typeParagraphe = 'paragraphe';
-    const typeChampCt = 'champ-ct'
     const typeTexte = 'texte'
     const typeLink = 'link'
     const typeImage = 'image'
@@ -47,10 +51,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
     const typeH4 = 'h4'
 
     const typeInput = 'input';
+    const typeFieldInput = 'field-input';
     const typeTextarea = 'textarea';
     const typeSelect = 'select';
     const typeCheckbox = 'checkbox';
     const typeCheckboxLabel = 'checkbox-label';
+    const typeRadioIcon = 'radio-icon';
     const typeRadio = 'radio';
     const typeButton = 'button';
     const typeButtonGotoNode = 'button-goto';
@@ -58,7 +64,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
     const typeOption = 'option';
 
     const catCadres = {id: 'cadres', label: 'Cadres', open: true}
-    const catForm = {id: 'forms', label: 'Formulaires', open: false}
+    const catSteps = {id: 'steps', label: 'Steps', open: false}
     const catChampsCt = {id: 'champs_ct', label: 'Champs CT', open: false}
     const catTitres = {id: 'titres', label: 'Titres', open: false}
     const catActions = {id: 'buttons', label: 'Actions', open: false}
@@ -89,8 +95,8 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             options: colonnes_ct,
         };
 
-        const nodesTrait = {
-            label: 'ID Cadre',
+        const nextStepTrait = {
+            label: 'Jump',
             name: 'target_id',
             type: 'select',
             options: list_cadres,
@@ -111,28 +117,30 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             name: 'obligatoire',
         };
 
+        const hiddenTrait = {
+            type: 'checkbox',
+            name: 'hidden',
+        };
+
         const checkedTrait = {
             type: 'checkbox',
             name: 'checked',
         };
 
-        const myNewComponentTypes = editor => {
-            const domc = editor.DomComponents
+        const script = function () {
+            document.addEventListener('click', function (event) {
+                let target_id = event.target.closest('.div-block').getAttribute('target_id')
+                let origin_id = event.target.closest('.step-container').getAttribute('id')
 
-            domc.addType(typeChampCt, {
-                isComponent: el => el.tagName == 'SPAN' && el.classList.contains('ct-span'),
-                model: {
-                    defaults: {
-                        tagName: 'span',
-                        attributes: {'class': 'ct-span ml-1 mr-1'},
-                        droppable: false,
-                        copyable: false,
-                        toolbar: [{attributes: {class: 'fas fa-trash-alt'}, command: 'tlb-delete'}],
-                    },
-                },
+                console.log(origin_id, target_id)
+                changeForm(origin_id, target_id)
             });
+        };
 
-            domc.addType(typeH1, {
+        const myNewComponentTypes = editor => {
+            const components = editor.DomComponents
+
+            components.addType(typeH1, {
                 isComponent: el => el.tagName == 'h1',
                 model: {
                     defaults: {
@@ -149,7 +157,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeH2, {
+            components.addType(typeH2, {
                 isComponent: el => el.tagName == 'h2',
                 model: {
                     defaults: {
@@ -166,7 +174,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeH3, {
+            components.addType(typeH3, {
                 isComponent: el => el.tagName == 'h3',
                 model: {
                     defaults: {
@@ -183,7 +191,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeH4, {
+            components.addType(typeH4, {
                 isComponent: el => el.tagName == 'h4',
                 model: {
                     defaults: {
@@ -200,7 +208,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeTexte, {
+            components.addType(typeTexte, {
                 isComponent: el => el.tagName == 'span' && el.classList.contains('span-text'),
                 model: {
                     defaults: {
@@ -224,7 +232,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeLink, {
+            components.addType(typeLink, {
                 isComponent: el => el.tagName == 'a',
 
                 model: {
@@ -246,12 +254,11 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeCadre, {
+            components.addType(typeCadre, {
                 model: {
                     defaults: {
-                        droppable: false,
-                        draggable: '.container, .cadre_script > *',
-                        copyable: false,
+                        droppable: true,
+                        copyable: true,
                         toolbar: [{attributes: {class: 'fas fa-trash-alt'}, command: 'tlb-delete'}],
                         //traits: [nodeIdTrait, nodeVisibleTrait],
                     },
@@ -281,14 +288,14 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeCadre1Col, {
+            components.addType(typeCadre1Col, {
                 extend: typeCadre,
                 isComponent: el => el.tagName == 'DIV' && el.classList.contains('one-column'),
 
                 model: {
                     defaults: {
                         tagName: 'div',
-                        attributes: {'class': 'columns one-column mt-2 cadre_script', 'visible': true},
+                        attributes: {'class': 'columns one-column mx-0 my-2 cadre_script', 'visible': true},
                         components: [
                             {
                                 tagName: 'div',
@@ -303,14 +310,15 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeCadre2Col, {
+            components.addType(typeCadre2Col, {
                 extend: typeCadre,
                 isComponent: el => el.tagName == 'DIV' && el.classList.contains('two-column'),
 
                 model: {
                     defaults: {
                         tagName: 'div',
-                        attributes: {'class': 'columns two-column mt-2 cadre_script', 'visible': true},
+                        droppable: false,
+                        attributes: {'class': 'columns two-column mx-0 my-2 cadre_script', 'visible': true},
                         components: [
                             {
                                 tagName: 'div',
@@ -331,14 +339,14 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeCadre3Col, {
+            components.addType(typeCadre3Col, {
                 extend: typeCadre,
                 isComponent: el => el.tagName == 'DIV' && el.classList.contains('three-column'),
 
                 model: {
                     defaults: {
                         tagName: 'div',
-                        attributes: {'class': 'columns three-column mt-2 cadre_script', 'visible': true},
+                        attributes: {'class': 'columns three-column mx-0 my-2 cadre_script', 'visible': true},
                         components: [
                             {
                                 tagName: 'div',
@@ -366,14 +374,14 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeCadre4Col, {
+            components.addType(typeCadre4Col, {
                 extend: typeCadre,
                 isComponent: el => el.tagName == 'DIV' && el.classList.contains('four-column'),
 
                 model: {
                     defaults: {
                         tagName: 'div',
-                        attributes: {'class': 'columns four-column mt-2 cadre_script', 'visible': true},
+                        attributes: {'class': 'columns four-column mx-0 my-2 cadre_script', 'visible': true},
                         components: [
                             {
                                 tagName: 'div',
@@ -408,14 +416,14 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeCadre3_9Col, {
+            components.addType(typeCadre3_9Col, {
                 extend: typeCadre,
                 isComponent: el => el.tagName == 'DIV' && el.classList.contains('three-nine-column'),
 
                 model: {
                     defaults: {
                         tagName: 'div',
-                        attributes: {'class': 'columns three-nine-column mt-2 cadre_script', 'visible': true},
+                        attributes: {'class': 'columns three-nine-column mx-0 my-2 cadre_script', 'visible': true},
                         components: [
                             {
                                 tagName: 'div',
@@ -436,27 +444,27 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeCadre9_3Col, {
-                extend: typeCadre,
+            components.addType(typeCadre9_3Col, {
+                // extend: typeCadre,
                 isComponent: el => el.tagName == 'DIV' && el.classList.contains('three-nine-column'),
 
                 model: {
                     defaults: {
                         tagName: 'div',
-                        attributes: {'class': 'columns three-nine-column mt-2 cadre_script', 'visible': true},
+                        attributes: {'class': 'columns three-nine-column mx-0 my-2 cadre_script'},
                         components: [
                             {
                                 tagName: 'div',
                                 attributes: {'class': 'column is-9 mb-0'},
                                 draggable: false,
-                                copyable: true,
+                                copyable: false,
                                 selectable: true,
                             },
                             {
                                 tagName: 'div',
                                 attributes: {'class': 'column is-3 mb-0'},
                                 draggable: false,
-                                copyable: true,
+                                copyable: false,
                                 selectable: true,
                             },
                         ]
@@ -464,45 +472,33 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeForm, {
-                extend: typeCadre,
-                isComponent: el => el.tagName == 'DIV' && el.classList.contains('form-layout'),
+            components.addType(typeStepContainer, {
+                isComponent: el => el.tagName == 'FORM' && el.classList.contains('step-container'),
                 model: {
                     defaults: {
-                        tagName: 'div',
+                        tagName: 'form',
                         attributes: {
-                            'class': 'form-layout mt-2 cadre_script',
-                            'style': 'max-width: none',
-                            'visible': true
+                            'class': 'step-container form-layout m-0 px-0 py-2',
                         },
-                        droppable: false,
+                        selectable: true,
+                        draggable: true,
+                        droppable: true,
                         copyable: false,
-                        components: [{
-                            tagName: 'div',
-                            attributes: {'class': 'form-outer'},
-                            droppable: false,
-                            draggable: false,
-                            copyable: false,
-                            selectable: false,
-                            components: [{
-                                tagName: 'div',
-                                attributes: {'class': 'form-body'},
-                                draggable: false,
-                                selectable: false,
-                                components: [{
-                                    tagName: 'form',
-                                    draggable: false,
-                                    selectable: false,
-                                    attributes: {'id': 'form-ct-script', method: 'post'},
-                                    components: [{
-                                        tagName: 'div',
-                                        draggable: false,
-                                        selectable: false,
-                                        attributes: {'class': 'form-section form-components p-2 mb-2'},
-                                    }]
-                                }]
-                            }]
-                        }]
+                        traits: [
+                            idTrait,
+                            hiddenTrait,
+                        ],
+                    },
+                    init() {
+                        this.on('change:attributes:obligatoire', this.handleObligatoireChange);
+                        this.on('change:attributes:hidden', this.onHiddenChange);
+                    },
+                    onHiddenChange() {
+                        (this.getAttributes().hidden) ? this.addClass('hide') : this.removeClass('hide');
+                    },
+                    handleObligatoireChange() {
+                        let obligatoire = this.getAttributes().obligatoire
+                        this.setClass(`input form-ct-input ${obligatoire ? 'ct-obligatoire' : ''}`);
                     },
                 },
 
@@ -514,21 +510,22 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             });
 
             // INPUT
-            domc.addType(typeInput, {
+            components.addType(typeInput, {
                 isComponent: el => el.tagName == 'INPUT',
                 model: {
                     defaults: {
+                        script,
                         tagName: 'input',
                         draggable: false,
                         droppable: false,
                         copyable: false,
                         highlightable: false,
-                        attributes: {type: 'text', class: "input form-ct-input"},
+                        attributes: {type: 'text', class: "input form-input"},
                         toolbar: [{attributes: {class: 'fas fa-trash-alt'}, command: 'tlb-delete'}],
-                        traits: [
-                            colonneTrait,
-                            requiredTrait
-                        ],
+                         traits: [
+                             nextStepTrait,
+                             requiredTrait
+                         ],
                     },
                     init() {
                         this.on('change:attributes:obligatoire', this.handleObligatoireChange);
@@ -555,39 +552,35 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             });
 
             // TEXTAREA
-            domc.addType(typeTextarea, {
-                extend: typeInput,
+            components.addType(typeTextarea, {
+                //extend: typeInput,
                 isComponent: el => el.tagName == 'TEXTAREA',
 
                 model: {
                     defaults: {
                         tagName: 'textarea',
-                        draggable: false,
-                        droppable: false,
-                        copyable: false,
+                        // draggable: false,
+                        // droppable: false,
+                        // copyable: false,
                         attributes: {class: "textarea form-ct-input"},
                         traits: [
                             colonneTrait,
                             requiredTrait
                         ]
                     },
-                    init() {
-                        this.on('change:attributes:obligatoire', this.handleObligatoireChange);
-                        this.on('change:attributes:name', this.handleNameChange);
-                    },
-                    handleObligatoireChange() {
-                        (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
-                    },
-                    handleNameChange() {
-                        if (this.getAttributes().name) {
-                            this.empty().append(`@{{{${this.getAttributes().name}}}}`)
-                        }
-                    }
+                    /*  init() {
+                          this.on('change:attributes:obligatoire', this.handleObligatoireChange);
+                          this.on('change:attributes:name', this.handleNameChange);
+                      },
+                      handleObligatoireChange() {
+                          (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
+                      },
+                    */
                 },
             });
 
             // OPTION
-            domc.addType(typeOption, {
+            components.addType(typeOption, {
                 isComponent: el => el.tagName == 'OPTION',
                 model: {
                     defaults: {
@@ -603,7 +596,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             const createOption = (value, name) => ({type: typeOption, components: name, attributes: {value}});
 
             // SELECT
-            domc.addType(typeSelect, {
+            components.addType(typeSelect, {
                 extend: typeInput,
                 isComponent: el => el.tagName == 'SELECT',
 
@@ -641,7 +634,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             });
 
             // CHECKBOX
-            domc.addType(typeCheckbox, {
+            components.addType(typeCheckbox, {
                 extend: typeInput,
                 isComponent: el => el.tagName == 'INPUT' && el.type == 'checkbox',
 
@@ -674,7 +667,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             });
 
             // CHECKBOX LABEL
-            domc.addType(typeCheckboxLabel, {
+            components.addType(typeCheckboxLabel, {
                 extend: typeInput,
                 isComponent: el => el.tagName == 'INPUT' && el.type == 'checkbox',
                 model: {
@@ -714,8 +707,68 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
+            components.addType(typeRadioIcon, {
+                isComponent: el => el.tagName == 'INPUT' && el.type == 'radio',
+                model: {
+                    defaults: {
+                        script,
+                        highlightable: true,
+                        selectable: true,
+                        draggable: true,
+                        droppable: true,
+                        copyable: false,
+                        traits: [
+                            idTrait,
+                            nextStepTrait,
+                            requiredTrait,
+                        ],
+                    },
+                    init() {
+                        this.on('change:attributes:obligatoire', this.handleObligatoireChange);
+                    },
+                    handleObligatoireChange() {
+                        (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
+                    },
+                },
+                view: {
+                    events: {
+                        submit: e => e.preventDefault(),
+                    }
+                },
+            });
+
+            components.addType(typeFieldInput, {
+                isComponent: el => el.tagName == 'INPUT',
+                model: {
+                    defaults: {
+                        script,
+                        highlightable: true,
+                        selectable: true,
+                        draggable: true,
+                        droppable: true,
+                        copyable: false,
+                        traits: [
+                            idTrait,
+                            nextStepTrait,
+                            requiredTrait,
+                        ],
+                    },
+                    init() {
+                        this.on('change:attributes:obligatoire', this.handleObligatoireChange);
+                    },
+                    handleObligatoireChange() {
+                        (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
+                    },
+                },
+                view: {
+                    events: {
+                        submit: e => e.preventDefault(),
+                    }
+                },
+            });
+
             // RADIO
-            domc.addType(typeRadio, {
+            components.addType(typeRadio, {
                 extend: typeCheckbox,
                 isComponent: el => el.tagName == 'INPUT' && el.type == 'radio',
 
@@ -726,7 +779,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            domc.addType(typeButton, {
+            components.addType(typeButton, {
                 extend: typeInput,
                 isComponent: el => el.tagName == 'BUTTON',
 
@@ -815,34 +868,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 },
             });
 
-            const script = function () {
-                document.addEventListener('click', function (event) {
-                    if (event.target.closest('.goto-node')) {
-                        let target_id = event.target.getAttribute('target_id')
-                        let target = document.getElementById(target_id);
-                        let target_siblings = target.parentNode.childNodes
-
-                        target.classList.remove('hide')
-
-                        for (target_sibling in target_siblings) {
-                            let sibling = target_siblings[target_sibling];
-                            let tag_name = sibling.tagName;
-
-                            if (!tag_name) {
-                                continue;
-                            }
-
-                            if (sibling.id != target_id && tag_name !== 'SCRIPT' && tag_name !== 'LINK' && tag_name !== 'STYLE') {
-                                sibling.classList.add('hide')
-                            }
-                        }
-
-                        return;
-                    }
-                });
-            };
-
-            domc.addType(typeButtonGotoNode, {
+            components.addType(typeButtonGotoNode, {
                 extend: typeInput,
                 isComponent: el => el.tagName == 'BUTTON' && el.classList.contains('goto-node'),
 
@@ -854,7 +880,6 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         attributes: {type: 'button', class: "button h-button goto-node m-1"},
                         text: 'Goto',
                         traits: [
-                            nodesTrait,
                             {
                                 name: 'outlined',
                                 type: 'checkbox'
@@ -932,7 +957,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             });
 
             // LABEL
-            domc.addType(typeLabel, {
+            components.addType(typeLabel, {
                 extend: 'text',
                 isComponent: el => el.tagName == 'LABEL',
 
@@ -944,13 +969,13 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         draggable: false,
                         copyable: false,
                     },
-                    // init() {
-                    //   this.on('change:attributes:text', this.handleTextChange);
-                    // },
+                    init() {
+                      this.on('change:attributes:text', this.handleTextChange);
+                    },
 
-                    // handleTextChange() {
-                    //   this.getEl().innerHTML = this.getAttributes().text
-                    // },
+                    handleTextChange() {
+                      this.getEl().innerHTML = this.getAttributes().text
+                    },
                 },
             });
         };
@@ -1073,11 +1098,8 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             storageManager: {
                 type: 'remote',
                 autosave: false,
-                urlStore: null,
-                // urlLoad: "{{ route('script_get', ['script' => $script]) }}",
-                /* 	headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    } */
+                urlStore: "/wp-content/plugins/form/store-form.php?id=<?php echo $_GET['id']; ?>",
+                urlLoad: "/wp-content/plugins/form/load-form.php?id=<?php echo $_GET['id']; ?>",
             },
         });
 
@@ -1102,15 +1124,15 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
         });
 
         editor.on('component:selected', (model) => {
-            if (model.attributes.attributes['class'] && model.attributes.attributes['class'].includes('goto-node')) {
-                let components = editor.getWrapper().find('.cadre_script, .container')
+            let components = editor.getWrapper().find('.step-container')
 
-                list_cadres = []
+            list_cadres = []
 
-                for (let component of components) {
-                    list_cadres.push({id: component.ccid, name: component.ccid})
-                }
+            for (let component of components) {
+                list_cadres.push({id: component.ccid, name: component.ccid})
+            }
 
+            if(model.getTrait('target_id')) {
                 model.getTrait('target_id').set('options', list_cadres);
             }
         })
@@ -1177,7 +1199,6 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             run(editor, sender) {
                 editor.store(res => {
                     alert('Script Enregistré')
-                    broadcast.postMessage('script_saved');
                 });
             },
         });
@@ -1294,72 +1315,58 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             }
         });
 
-        editor.Blocks.add(typeForm, {
-            label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Form</span>',
+        editor.Blocks.add(typeStepContainer, {
+            label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Step Container</span>',
             media: '<span class="has-text-grey-lighter"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 5.5c0-.3-.5-.5-1.3-.5H3.4c-.8 0-1.3.2-1.3.5v3c0 .3.5.5 1.3.5h17.4c.8 0 1.3-.2 1.3-.5v-3zM21 8H3V6h18v2zM22 10.5c0-.3-.5-.5-1.3-.5H3.4c-.8 0-1.3.2-1.3.5v3c0 .3.5.5 1.3.5h17.4c.8 0 1.3-.2 1.3-.5v-3zM21 13H3v-2h18v2z"/><rect width="10" height="3" x="2" y="15" rx=".5"/></svg></span>',
-            category: catForm,
+            category: catSteps,
             content: {
-                type: typeForm
+                type: typeStepContainer
             }
         });
 
         editor.Blocks.add(typeImage, {
             label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Image</span>',
             media: `<span class="has-text-grey-lighter"><i class="far fa-image fa-3x"></i></span>`,
-            category: catForm,
+            category: catSteps,
             select: true,
             traits: [{default: {}}],
             content: {type: 'image', toolbar: [{attributes: {class: 'fas fa-trash-alt'}, command: 'tlb-delete'}],},
             activate: true,
         });
 
-        editor.Blocks.add(typeInput, {
+        editor.Blocks.add(typeFieldInput, {
             label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Champ de saisie</span>',
             media: `<span class="has-text-grey-lighter">
                 <svg class="gjs-block-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path class="gjs-block-svg-path" d="M22,9 C22,8.4 21.5,8 20.75,8 L3.25,8 C2.5,8 2,8.4 2,9 L2,15 C2,15.6 2.5,16 3.25,16 L20.75,16 C21.5,16 22,15.6 22,15 L22,9 Z M21,15 L3,15 L3,9 L21,9 L21,15 Z"></path>
                 <polygon class="gjs-block-svg-path" points="4 10 5 10 5 14 4 14"></polygon>
                 </svg></span>`,
-            category: catForm,
+            category: catSteps,
             select: true,
             traits: [{default: {}}],
             content: {
-                tagName: 'div',
-                selectable: true,
-                toolbar: [{attributes: {class: 'fas fa-trash-alt'}, command: 'tlb-delete'}],
-                attributes: {class: "field is-horizontal"},
-                droppable: false,
-                draggable: '.form-components',
+                type: typeFieldInput,
+                attributes: {class: "div-block"},
                 components: [{
                     tagName: 'div',
-                    attributes: {class: "field-label is-normal"},
                     droppable: false,
                     draggable: false,
                     selectable: false,
                     components: [
-                        {type: typeLabel, attributes: {class: "label"}, droppable: false, toolbar: [],},
+                        {
+                            type: 'label',
+                            attributes: {
+                                class: "form-label label"
+                            },
+                        },
+                        {
+                            type: 'input',
+                            attributes: {
+                                type:'text',
+                                class: "input answer"
+                            },
+                        }
                     ]
-                }, {
-                    tagName: 'div',
-                    attributes: {class: "field-body"},
-                    droppable: false,
-                    draggable: false,
-                    selectable: false,
-                    components: [{
-                        droppable: false,
-                        draggable: false,
-                        selectable: false,
-                        tagName: 'div',
-                        attributes: {class: "field"},
-                        components: [{
-                            droppable: false,
-                            draggable: false,
-                            selectable: false,
-                            tagName: 'div',
-                            attributes: {class: "control"},
-                            components: [{type: typeInput, toolbar: [],}]
-                        }]
-                    }]
                 }]
             }
         });
@@ -1368,15 +1375,15 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Checkbox</span>',
             media: `<span class="has-text-grey-lighter"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 17l-5-5 1.41-1.42L10 14.17l7.59-7.59L19 8m0-5H5c-1.11 0-2 .89-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5a2 2 0 0 0-2-2z"></path></svg></span>`,
             select: true,
-            category: catForm,
+            category: catSteps,
             traits: [{default: {}}],
             content: {
                 tagName: 'div',
                 attributes: {class: "field is-horizontal"},
-                droppable: false,
-                draggable: '.form-components',
+                // droppable: false,
+                // draggable: '.form-components',
                 components: [{
-                    droppable: false,
+                    // droppable: false,
                     tagName: 'div',
                     attributes: {class: "field-label is-normal"},
                     components: [
@@ -1384,20 +1391,87 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                     ]
                 }, {
                     tagName: 'div',
-                    droppable: false,
+                    // droppable: false,
                     attributes: {class: "field-body"},
                     components: [{
                         tagName: 'div',
                         attributes: {class: "field"},
-                        droppable: false,
+                        // droppable: false,
                         components: [{
-                            droppable: false,
+                            // droppable: false,
                             tagName: 'div',
                             attributes: {class: "control"},
                             components: [{type: typeCheckboxLabel}]
                         }]
                     }]
                 }]
+            }
+        });
+
+        editor.Blocks.add(typeRadioIcon, {
+            label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Choix Icon</span>',
+            media: `<span class="has-text-grey-lighter"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 17l-5-5 1.41-1.42L10 14.17l7.59-7.59L19 8m0-5H5c-1.11 0-2 .89-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5a2 2 0 0 0-2-2z"></path></svg></span>`,
+            category: catSteps,
+            select: true,
+            traits: [{default: {}}],
+            content: {
+                tagName: 'div',
+                type:typeRadioIcon,
+                attributes: {
+                    class: "radio-icon div-block div-block-14"
+                },
+                selectable: true,
+                components: [
+                    {
+                        tagName: 'div',
+                        attributes: {
+                            class: 'div-block-15'
+                        },
+                        selectable: false,
+                        highlightable: false,
+                        components: [
+                            {
+                                type: typeLabel,
+                                attributes: {
+                                    class: "label paragraph-8"
+                                },
+                            }
+                        ]
+                    },
+                    {
+                        tagName: 'div',
+                        attributes: {
+                            class: 'div-block-16'
+                        },
+                        selectable: false,
+                        highlightable: false,
+                        components: [
+                            {
+                                attributes: {
+                                    class: "image-6"
+                                },
+                                type: typeImage,
+                            }
+                        ]
+                    },
+                    {
+                        tagName: 'div',
+                        attributes: {
+                            class: 'div-block-17'
+                        },
+                        selectable: false,
+                        highlightable: false,
+                        components: [{
+                            tagName: 'input',
+                            attributes: {
+                                type: 'radio',
+                                name: 'situation',
+                                value: 'Locataire',
+                                class: 'button-6 w-button answer',
+                            }
+                        }]
+                    }
+                ]
             }
         });
 
@@ -1410,7 +1484,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 <rect class="gjs-block-svg-path" x="4" y="11.5" width="11" height="1"></rect>
                 </svg></span>`,
             select: true,
-            category: catForm,
+            category: catSteps,
             traits: [{default: {}}],
             content: {
                 tagName: 'div',
@@ -1469,42 +1543,42 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 <polygon class="gjs-block-svg-path" points="20 8 21 8 21 9 20 9"></polygon>
                 <polygon class="gjs-block-svg-path" points="20 15 21 15 21 16 20 16"></polygon>
                 </svg></span>`,
-            category: catForm,
+            category: catSteps,
             // select: true,
             traits: [{default: {}}],
             content: {
                 tagName: 'div',
                 attributes: {class: "field is-horizontal"},
-                droppable: false,
-                selectable: false,
-                draggable: '.form-components',
+                // droppable: false,
+                // selectable: false,
+                // draggable: '.form-components',
                 components: [{
                     tagName: 'div',
                     attributes: {class: "field-label is-normal"},
-                    selectable: false,
-                    droppable: false,
-                    draggable: false,
+                    // selectable: false,
+                    // droppable: false,
+                    // draggable: false,
                     components: [{
                         type: typeLabel,
                         attributes: {class: "label"},
-                        droppable: false,
+                        // droppable: false,
                     }]
                 }, {
                     tagName: 'div',
                     attributes: {class: "field-body"},
-                    droppable: false,
-                    draggable: false,
-                    selectable: false,
+                    // droppable: false,
+                    // draggable: false,
+                    // selectable: false,
                     components: [{
-                        droppable: false,
-                        draggable: false,
-                        selectable: false,
+                        // droppable: false,
+                        // draggable: false,
+                        // selectable: false,
                         tagName: 'div',
                         attributes: {class: "field"},
                         components: [{
-                            droppable: false,
-                            draggable: false,
-                            selectable: false,
+                            // droppable: false,
+                            // draggable: false,
+                            // selectable: false,
                             tagName: 'div',
                             attributes: {class: "control"},
                             components: [{type: typeTextarea}]
@@ -1517,23 +1591,11 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
         editor.Blocks.add(typeTexte, {
             label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Texte</span>',
             media: '<span class="has-text-grey-lighter"><i class="fal fa-text fa-3x mb-3"></i></span>',
-            category: catForm,
+            category: catSteps,
             content: {
                 type: typeTexte,
             }
         });
-
-        for (let ct of colonnes_ct) {
-            editor.Blocks.add(`champs-ct-${ct.name}`, {
-                label: `<span class="has-text-grey-lighter is-weight-900 rem-90">${ct.name}</span>`,
-                media: '<span class="has-text-grey-lighter"><i class="fal fa-info-circle fa-3x mb-3"></i></span>',
-                category: catChampsCt,
-                content: {
-                    type: typeChampCt,
-                    components: `@{{{${ct.name}}}}`
-                }
-            });
-        }
 
         editor.Blocks.add(typeButtonGotoNode, {
             label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Goto</span>',
