@@ -36,7 +36,7 @@ if ($method == 'GET') {
     <title>Script</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <style>
-        <?php echo $content_formatted['styles']; ?>
+        <?php echo $content_formatted['css']; ?>
     </style>
 </head>
 <body>

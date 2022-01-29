@@ -1418,14 +1418,14 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 tagName: 'div',
                 type:typeRadioIcon,
                 attributes: {
-                    class: "radio-icon div-block div-block-14"
+                    class: "radio-icon div-block"
                 },
                 selectable: true,
                 components: [
                     {
                         tagName: 'div',
                         attributes: {
-                            class: 'div-block-15'
+                            class: 'radio-icon-label-container'
                         },
                         selectable: false,
                         highlightable: false,
@@ -1433,7 +1433,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             {
                                 type: typeLabel,
                                 attributes: {
-                                    class: "label paragraph-8"
+                                    class: "label"
                                 },
                             }
                         ]
@@ -1441,23 +1441,24 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                     {
                         tagName: 'div',
                         attributes: {
-                            class: 'div-block-16'
+                            class: 'radio-icon-img-container'
                         },
                         selectable: false,
                         highlightable: false,
                         components: [
-                            {
-                                attributes: {
-                                    class: "image-6"
-                                },
-                                type: typeImage,
-                            }
-                        ]
+							{
+                            	tagName: 'img',
+								type:'image',
+		                        highlightable: false,
+								selectable: true,
+								toolbar: [],
+							}
+						]
                     },
                     {
                         tagName: 'div',
                         attributes: {
-                            class: 'div-block-17'
+                            class: 'radio-icon-input-container'
                         },
                         selectable: false,
                         highlightable: false,
