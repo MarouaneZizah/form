@@ -154,6 +154,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             selectable: true,
                         }]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -171,6 +177,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             selectable: false,
                         }]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -188,6 +200,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             selectable: false,
                         }]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -205,6 +223,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             selectable: false,
                         }]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -216,19 +240,23 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         name: 'texte',
                         toolbar: [{attributes: {class: 'fas fa-trash-alt'}, command: 'tlb-delete'}],
                         selectable: true,
-                        // attributes: {'class': 'pl-1 pr-1'},
                         classes: ['pl-1', 'pr-1'],
                         stylable: false,
                         components: [{
                             type: 'text',
                             tagName: 'span',
-                            // attributes: {'class': 'span-text'},
                             classes: ['span-text'],
                             stylable: true,
                             selectable: true,
                             components: 'Modifier le texte',
                         }]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -251,6 +279,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             selectable: false,
                         }]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -264,8 +298,11 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                     },
                     init() {
                         this.on('change:attributes:visible', this.handleVisibleChange);
+						this.on("change", this.handleChange);
                     },
-
+					handleChange() {
+						this.addClass(this.getId());
+					},
                     handleVisibleChange() {
                         let visible = this.getAttributes().visible
                         let classes = this.getAttributes().class.split(/\s+/)
@@ -295,18 +332,25 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 model: {
                     defaults: {
                         tagName: 'div',
-                        attributes: {'class': 'columns one-column mx-0 my-2 cadre_script', 'visible': true},
+                        attributes: {
+							'class': 'columns one-column mx-0 my-2 cadre_script',
+						},
                         components: [
                             {
                                 tagName: 'div',
                                 attributes: {'class': 'column is-12'},
-                                // droppable: false,
                                 draggable: false,
                                 copyable: false,
                                 selectable: false,
                             }
                         ]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -336,6 +380,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             }
                         ]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -371,6 +421,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             }
                         ]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -413,6 +469,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             }
                         ]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -441,6 +503,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             },
                         ]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -469,6 +537,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             },
                         ]
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -492,6 +566,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                     init() {
                         this.on('change:attributes:obligatoire', this.handleObligatoireChange);
                         this.on('change:attributes:hidden', this.onHiddenChange);
+						this.on("change", this.handleChange);
                     },
                     onHiddenChange() {
                         (this.getAttributes().hidden) ? this.addClass('hide') : this.removeClass('hide');
@@ -500,6 +575,9 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         let obligatoire = this.getAttributes().obligatoire
                         this.setClass(`input form-ct-input ${obligatoire ? 'ct-obligatoire' : ''}`);
                     },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
 
                 view: {
@@ -530,6 +608,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                     init() {
                         this.on('change:attributes:obligatoire', this.handleObligatoireChange);
                         this.on('change:attributes:name', this.handleNameChange);
+						this.on("change", this.handleChange);
                     },
                     handleObligatoireChange() {
                         (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
@@ -541,7 +620,11 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                                 value: `@{{{${this.getAttributes().name}}}}`
                             })
                         }
-                    }
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
+
                 },
                 extendFnView: ['updateAttributes'],
                 view: {
@@ -568,14 +651,16 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             requiredTrait
                         ]
                     },
-                    /*  init() {
-                          this.on('change:attributes:obligatoire', this.handleObligatoireChange);
-                          this.on('change:attributes:name', this.handleNameChange);
-                      },
-                      handleObligatoireChange() {
-                          (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
-                      },
-                    */
+					init() {
+						this.on("change", this.handleChange);
+						this.on('change:attributes:obligatoire', this.handleObligatoireChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					},
+					handleObligatoireChange() {
+						// (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
+					},
                 },
             });
 
@@ -590,6 +675,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         draggable: false,
                         highlightable: false,
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -619,11 +710,15 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                     },
                     init() {
                         this.on('change:attributes:obligatoire', this.handleObligatoireChange);
+						this.on("change", this.handleChange);
                     },
                     handleObligatoireChange() {
                         let obligatoire = this.getAttributes().obligatoire
                         this.setClass(`input form-ct-input ${obligatoire ? 'ct-obligatoire' : ''}`);
                     },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
 
                 view: {
@@ -649,6 +744,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             checkedTrait
                         ],
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
 
                 view: {
@@ -671,12 +772,6 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                 extend: typeInput,
                 isComponent: el => el.tagName == 'INPUT' && el.type == 'checkbox',
                 model: {
-                    // init() {
-                    //   this.on('change:attributes:text', this.handleTextChange);
-                    // },
-                    // handleTextChange(model) {
-                    //   this.components().models[2].getEl().textContent = this.getAttributes().text
-                    // },
                     defaults: {
                         tagName: 'label',
                         copyable: false,
@@ -690,6 +785,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         ],
                         traits: [colonneTrait, labelTrait, requiredTrait,],
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
 
                 view: {
@@ -724,11 +825,15 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         ],
                     },
                     init() {
+						this.on("change", this.handleChange);
                         this.on('change:attributes:obligatoire', this.handleObligatoireChange);
                     },
                     handleObligatoireChange() {
                         (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
                     },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
                 view: {
                     events: {
@@ -754,11 +859,15 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         ],
                     },
                     init() {
+						this.on("change", this.handleChange);
                         this.on('change:attributes:obligatoire', this.handleObligatoireChange);
                     },
                     handleObligatoireChange() {
                         (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
                     },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
                 view: {
                     events: {
@@ -776,6 +885,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                     defaults: {
                         attributes: {type: 'radio', class: 'form-ct-input'},
                     },
+					init() {
+						this.on("change", this.handleChange);
+                    },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
 
@@ -818,8 +933,8 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             }
                         ]
                     },
-
                     init() {
+						this.on("change", this.handleChange);
                         const comps = this.components();
                         const tChild = comps.length === 1 && comps.models[0];
                         const chCnt = (tChild && tChild.is('textnode') && tChild.get('content')) || '';
@@ -859,6 +974,9 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             this.setClass(`button h-button is-${color} ${outlined}`);
                         }
                     },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
 
                 view: {
@@ -906,8 +1024,8 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                                 changeProp: true,
                             }]
                     },
-
                     init() {
+						this.on("change", this.handleChange);
                         const comps = this.components();
                         const tChild = comps.length === 1 && comps.models[0];
                         const chCnt = (tChild && tChild.is('textnode') && tChild.get('content')) || '';
@@ -947,6 +1065,9 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             this.setClass(`button h-button goto-node m-1 is-${color} ${outlined}`);
                         }
                     },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
 
                 view: {
@@ -970,12 +1091,15 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         copyable: false,
                     },
                     init() {
-                      this.on('change:attributes:text', this.handleTextChange);
+						this.on("change", this.handleChange);
+						this.on('change:attributes:text', this.handleTextChange);
                     },
-
                     handleTextChange() {
-                      this.getEl().innerHTML = this.getAttributes().text
+						this.getEl().innerHTML = this.getAttributes().text
                     },
+					handleChange() {
+						this.addClass(this.getId());
+					}
                 },
             });
         };
@@ -1209,6 +1333,14 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             }
         });
 
+		editor.getWrapper().addClass('my-class');
+
+		editor.CssComposer.setRule('.some-class', { color: 'red' })
+
+		// Remove
+		// const rule = editor.CssComposer.getRule('.some-class');
+		// editor.CssComposer.getAll().remove(rule);
+
         initBlocks()
     }
 
@@ -1316,7 +1448,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
         });
 
         editor.Blocks.add(typeStepContainer, {
-            label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Step Container</span>',
+            label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Etape</span>',
             media: '<span class="has-text-grey-lighter"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 5.5c0-.3-.5-.5-1.3-.5H3.4c-.8 0-1.3.2-1.3.5v3c0 .3.5.5 1.3.5h17.4c.8 0 1.3-.2 1.3-.5v-3zM21 8H3V6h18v2zM22 10.5c0-.3-.5-.5-1.3-.5H3.4c-.8 0-1.3.2-1.3.5v3c0 .3.5.5 1.3.5h17.4c.8 0 1.3-.2 1.3-.5v-3zM21 13H3v-2h18v2z"/><rect width="10" height="3" x="2" y="15" rx=".5"/></svg></span>',
             category: catSteps,
             content: {
@@ -1589,15 +1721,6 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             }
         });
 
-        editor.Blocks.add(typeTexte, {
-            label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Texte</span>',
-            media: '<span class="has-text-grey-lighter"><i class="fal fa-text fa-3x mb-3"></i></span>',
-            category: catSteps,
-            content: {
-                type: typeTexte,
-            }
-        });
-
         editor.Blocks.add(typeButtonGotoNode, {
             label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Goto</span>',
             media: `<span class="has-text-grey-lighter">
@@ -1659,6 +1782,16 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             category: catTitres,
             content: {
                 type: typeH4,
+            }
+        });
+
+
+        editor.Blocks.add(typeTexte, {
+            label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Texte</span>',
+            media: '<span class="has-text-grey-lighter"><i class="fal fa-text fa-3x mb-3"></i></span>',
+            category: catTitres,
+            content: {
+                type: typeTexte,
             }
         });
     }
