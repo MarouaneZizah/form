@@ -158,10 +158,9 @@ echo $content_formatted['html']; ?>
         }
 
 		if(target_step[0]) {
-			const email 		 = target_step[0].getAttribute('submit_email');
-			const is_type_submit = target_step[0].getAttribute('is_type_submit');
+			const is_type_submit = target_step[0].getAttribute('data-type-submit');
 
-			if(email) {
+			if(is_type_submit !== null) {
 				let payload = [];
 				let forms 	= document.querySelectorAll('form');
 
@@ -174,7 +173,7 @@ echo $content_formatted['html']; ?>
 					}
 				});
 
-				$.post("/wp-content/plugins/form/submit.php", { email: email, payload: payload },
+				$.post("/wp-content/plugins/form/submit.php", { data: payload },
 				function(data, status){
 					console.log("Data: " + data + "\nStatus: " + status);
 				});

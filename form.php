@@ -2,14 +2,30 @@
 echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/fontawesome/css/all.min.css">';
 echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/bulma.css">';
 echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/grapes.min.css">';
-//echo '<link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">';
 echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/script-editor.css">';
 
 echo '<script src="'.plugin_dir_url(__FILE__).'js/axios.min.js"></script>';
 echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
-//echo '<script src="https://unpkg.com/grapesjs"></script>';
 
+$id = $_GET['id'];
 
+$form = get_post($id);
+
+if(!$form) {
+	$id = wp_insert_post([
+		'post_title'   => 'Form',
+		'post_type'    => 'game_form',
+		'post_content' => maybe_serialize([
+			"assets"     => '',
+			"components" => '',
+			"css"        => '',
+			"html"       => '',
+			"styles"     => '',
+		]),
+	]);
+
+	$form = get_post(array('id' => $id, 'post_type' => 'game_form'));
+}
 ?>
 
 <div class="editor-row">
@@ -143,14 +159,8 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
 
 		const isTypeSubmit = {
             type: 'checkbox',
-            name: 'is_type_submit',
+            name: 'data-type-submit',
             label: 'Submit',
-        };
-
-		const submitEmail = {
-            type: 'text',
-            name: 'submit_email',
-            label: 'Email',
         };
 
         const checkedTrait = {
@@ -594,14 +604,11 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                             idTrait,
                             hiddenTrait,
                             isTypeSubmit,
-                            submitEmail,
                         ],
                     },
                     init() {
                         this.on('change:attributes:obligatoire', this.handleObligatoireChange);
                         this.on('change:attributes:hidden', this.onHiddenChange);
-                        this.on('change:attributes:is_type_submit', this.onisTypeSubmitChange);
-                        this.on('change:attributes:submit_email', this.onsubmitEmailChange);
 						this.on("change", this.handleChange);
                     },
                     onHiddenChange() {
@@ -611,12 +618,6 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         let obligatoire = this.getAttributes().obligatoire
                         this.setClass(`input form-ct-input ${obligatoire ? 'ct-obligatoire' : ''}`);
                     },
-					onisTypeSubmitChange() {
-						this.set('data-type', this.getAttributes().is_type_submit)
-					},
-					onsubmitEmailChange() {
-						this.set('data-email', this.getAttributes().submit_email)
-					},
 					handleChange() {
 						this.addClass(this.getId());
 					}
@@ -1285,8 +1286,8 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             storageManager: {
                 type: 'remote',
                 autosave: false,
-                urlStore: "/wp-content/plugins/form/store-form.php?id=<?php echo $_GET['id']; ?>",
-                urlLoad: "/wp-content/plugins/form/load-form.php?id=<?php echo $_GET['id']; ?>",
+                urlStore: "/wp-content/plugins/form/store-form.php?id=<?php echo $form->ID; ?>",
+                urlLoad: "/wp-content/plugins/form/load-form.php?id=<?php echo $form->ID; ?>",
             },
         });
 

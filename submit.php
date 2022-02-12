@@ -15,7 +15,7 @@
 		case 'POST':
 			$message = "";
 
-			foreach ($_POST['payload'] as $data) {
+			foreach ($_POST['data'] as $data) {
 				$message .= $data['name']." : ".sanitize_text_field( $data["value"] )."</br>";
 			}
 
