@@ -86,3 +86,11 @@ html {
 .gjs-pn-btn {
     color: #fff;
 }
+
+#wpcontent{
+	padding: 0;
+}
+
+#screen-meta, #dolly, .update-nag{
+	display: none;
+}

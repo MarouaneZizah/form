@@ -159,6 +159,8 @@ echo $content_formatted['html']; ?>
 
 		if(target_step[0]) {
 			const is_type_submit = target_step[0].getAttribute('data-type-submit');
+			const email 		 = target_step[0].getAttribute('data-submit-email');
+			const redurectionUrl = target_step[0].getAttribute('data-submit-redirection');
 
 			if(is_type_submit !== null) {
 				let payload = [];
@@ -173,9 +175,13 @@ echo $content_formatted['html']; ?>
 					}
 				});
 
-				$.post("/wp-content/plugins/form/submit.php", { data: payload },
+				$.post("/wp-content/plugins/form/submit.php", { email: email, data: payload },
 				function(data, status){
 					console.log("Data: " + data + "\nStatus: " + status);
+
+					if(redurectionUrl !== null) {
+						window.location = redurectionUrl
+					}
 				});
 			}
 		}

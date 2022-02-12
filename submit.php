@@ -19,9 +19,15 @@
 				$message .= $data['name']." : ".sanitize_text_field( $data["value"] )."</br>";
 			}
 
+			$email = sanitize_text_field($_POST['email']);
+
+			if(!$email) {
+				$email = get_option( 'admin_email' );
+			}
+
 			$subject = "New contact";
-			$to 	 = get_option( 'admin_email' );
-			$headers = "From: Admin <$to>" . "\r\n";
+			$to 	 = $email;
+			$headers = "From: Admin <".get_option('admin_email').">" . "\r\n";
 
 			// If email has been process for sending, display a success message
 			if ( wp_mail($to, $subject, $message, $headers ) ) {

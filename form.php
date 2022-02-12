@@ -163,6 +163,18 @@ if(!$form) {
             label: 'Submit',
         };
 
+		const submitEmail = {
+            type: 'text',
+            name: 'data-submit-email',
+            label: 'Email',
+        };
+
+		const submitRedirectionUrl = {
+            type: 'text',
+            name: 'data-submit-redirection',
+            label: 'Url Redirection',
+        };
+
         const checkedTrait = {
             type: 'checkbox',
             name: 'checked',
@@ -604,6 +616,8 @@ if(!$form) {
                             idTrait,
                             hiddenTrait,
                             isTypeSubmit,
+							submitEmail,
+							submitRedirectionUrl,
                         ],
                     },
                     init() {
