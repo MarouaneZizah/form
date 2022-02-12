@@ -88,33 +88,62 @@ echo $content_formatted['html']; ?>
         let target_step = $('#' + target_selector).closest("form");
 
         let isChecked = false;
-        let answers = document.querySelectorAll('#' + current_selector + " .answer");
+        let answers = document.querySelectorAll('#'+current_selector+' .answer, #'+current_selector+' .input');
 
-        console.log(current_selector, target_selector)
-        console.log('changeForDm', current_step, target_step);
+        // console.log(current_selector, target_selector)
+        // console.log('changeForDm', current_step, target_step);
 
         answers.forEach((answer) => {
-            if ((answer.tagName = "INPUT")) {
+			// console.log(answer.tagName)
+
+            if (answer.tagName == "INPUT") {
                 if (answer.type == "radio") {
                     if (answer.checked) isChecked = true;
                 }
+
                 if (answer.type == "text") {
-                    if (answer.classList.contains("code-postal")) {
+					const inputType = answer.getAttribute('input_type');
+
+                    if (inputType == 'code_postal') {
                         if (answer.value.length == 5) isChecked = true;
                         answer.classList.add("_valid");
-                    } else if (answer.classList.contains("answerEmail")) {
+					} else if (inputType == 'telephone') {
                         if (answer.value.length > 9) isChecked = true;
+                    } else if (inputType == 'email') {
+
+						// console.log('is email')
+
+						const regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+						if (!answer.value.match(regexp)) {
+							answer.classList.add('_error');
+							answer.classList.remove("_valid");
+
+						}
+						else {
+							answer.classList.remove('_error');
+							answer.classList.add("_valid");
+
+							isChecked = true;
+						}
                     } else {
                         if (answer.value.length >= 2) isChecked = true;
                     }
                 }
+
                 if (answer.type == "email") {
                     if (answer.value.length >= 7) isChecked = true;
                 }
+
             }
         });
 
-        console.log('answers isChecked', isChecked);
+		if(!isChecked) {
+			// console.log('infos non vallide');
+			return;
+		}
+
+        // console.log('answers isChecked', isChecked);
 
         if (!answers) {
             isChecked = true;
@@ -128,28 +157,29 @@ echo $content_formatted['html']; ?>
             console.log('Form not valid');
         }
 
-        /*        if (event.target.closest('.goto-node')) {
-                    let target_id = event.target.getAttribute('target_id')
-                    let target = document.getElementById(target_id);
-                    let target_siblings = target.parentNode.childNodes
+		if(target_step[0]) {
+			const email 		 = target_step[0].getAttribute('submit_email');
+			const is_type_submit = target_step[0].getAttribute('is_type_submit');
 
-                    target.classList.remove('hide')
+			if(email) {
+				let payload = [];
+				let forms 	= document.querySelectorAll('form');
 
-                    for (target_sibling in target_siblings) {
-                        let sibling = target_siblings[target_sibling];
-                        let tag_name = sibling.tagName;
+				forms.forEach((form) => {
+					let data 		= new FormData(form)
+					let formData 	= Array.from(data.entries())
 
-                        if (!tag_name) {
-                            continue;
-                        }
+					for (const [name, value] of formData) {
+						payload.push({ name, value })
+					}
+				});
 
-                        if (sibling.id != target_id && tag_name !== 'SCRIPT' && tag_name !== 'LINK' && tag_name !== 'STYLE') {
-                            sibling.classList.add('hide')
-                        }
-                    }
-
-                    return;
-                }*/
+				$.post("/wp-content/plugins/form/submit.php", { email: email, payload: payload },
+				function(data, status){
+					console.log("Data: " + data + "\nStatus: " + status);
+				});
+			}
+		}
     }
 
 </script>

@@ -102,14 +102,33 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             options: list_cadres,
         };
 
+		const inputTypeTrait = {
+            label: 'Type',
+            name: 'input_type',
+            type: 'select',
+            options: [
+				{value: 'text', name: 'Text'},
+				{value: 'code_postal', name: 'Code postale'},
+				{value: 'email', name: 'Email'},
+				{value: 'telephone', name: 'Téléphone'},
+			],
+
+        };
+
         const valueTrait = {
-            name: 'default_value',
-            label: 'Valeur par défaut',
+            name: 'value',
+            label: 'Value',
         };
 
         const labelTrait = {
             name: 'text',
             label: 'Texte',
+        };
+
+		const nameTrait = {
+            label: 'Name',
+            name: 'name',
+            type: 'text',
         };
 
         const requiredTrait = {
@@ -122,6 +141,18 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             name: 'hidden',
         };
 
+		const isTypeSubmit = {
+            type: 'checkbox',
+            name: 'is_type_submit',
+            label: 'Submit',
+        };
+
+		const submitEmail = {
+            type: 'text',
+            name: 'submit_email',
+            label: 'Email',
+        };
+
         const checkedTrait = {
             type: 'checkbox',
             name: 'checked',
@@ -129,11 +160,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
 
         const script = function () {
             document.addEventListener('click', function (event) {
-                let target_id = event.target.closest('.div-block').getAttribute('target_id')
-                let origin_id = event.target.closest('.step-container').getAttribute('id')
+                let target_id = (event.target.closest('.div-block')) ? event.target.closest('.div-block').getAttribute('target_id') : null
+                let origin_id = (event.target.closest('.step-container')) ?  event.target.closest('.step-container').getAttribute('id') : null
 
-                console.log(origin_id, target_id)
-                changeForm(origin_id, target_id)
+				if(target_id && origin_id) {
+					changeForm(origin_id, target_id)
+				}
             });
         };
 
@@ -561,11 +593,15 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         traits: [
                             idTrait,
                             hiddenTrait,
+                            isTypeSubmit,
+                            submitEmail,
                         ],
                     },
                     init() {
                         this.on('change:attributes:obligatoire', this.handleObligatoireChange);
                         this.on('change:attributes:hidden', this.onHiddenChange);
+                        this.on('change:attributes:is_type_submit', this.onisTypeSubmitChange);
+                        this.on('change:attributes:submit_email', this.onsubmitEmailChange);
 						this.on("change", this.handleChange);
                     },
                     onHiddenChange() {
@@ -575,6 +611,12 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         let obligatoire = this.getAttributes().obligatoire
                         this.setClass(`input form-ct-input ${obligatoire ? 'ct-obligatoire' : ''}`);
                     },
+					onisTypeSubmitChange() {
+						this.set('data-type', this.getAttributes().is_type_submit)
+					},
+					onsubmitEmailChange() {
+						this.set('data-email', this.getAttributes().submit_email)
+					},
 					handleChange() {
 						this.addClass(this.getId());
 					}
@@ -594,32 +636,33 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                     defaults: {
                         script,
                         tagName: 'input',
-                        draggable: false,
-                        droppable: false,
-                        copyable: false,
-                        highlightable: false,
+                        draggable: true,
+                        droppable: true,
+                        copyable: true,
+                        highlightable: true,
+                        selectable: true,
                         attributes: {type: 'text', class: "input form-input"},
-                        toolbar: [{attributes: {class: 'fas fa-trash-alt'}, command: 'tlb-delete'}],
-                         traits: [
-                             nextStepTrait,
-                             requiredTrait
-                         ],
+						traits: [
+							nextStepTrait,
+							nameTrait,
+							requiredTrait,
+							inputTypeTrait
+						],
                     },
                     init() {
+                        this.on('change:attributes:input_type', this.handleInputTypeChange);
                         this.on('change:attributes:obligatoire', this.handleObligatoireChange);
                         this.on('change:attributes:name', this.handleNameChange);
 						this.on("change", this.handleChange);
                     },
+					handleInputTypeChange() {
+						this.set('data-type', this.getAttributes().input_type)
+					},
                     handleObligatoireChange() {
                         (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
                     },
                     handleNameChange() {
-                        if (this.getAttributes().name) {
-                            this.setAttributes({
-                                name: this.getAttributes().name,
-                                value: `@{{{${this.getAttributes().name}}}}`
-                            })
-                        }
+
                     },
 					handleChange() {
 						this.addClass(this.getId());
@@ -648,6 +691,7 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         attributes: {class: "textarea form-ct-input"},
                         traits: [
                             colonneTrait,
+							nameTrait,
                             requiredTrait
                         ]
                     },
@@ -821,16 +865,35 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
                         traits: [
                             idTrait,
                             nextStepTrait,
-                            requiredTrait,
+							nameTrait,
+							valueTrait,
                         ],
                     },
                     init() {
 						this.on("change", this.handleChange);
+						this.on('change:attributes:name', this.handleNameChange);
                         this.on('change:attributes:obligatoire', this.handleObligatoireChange);
                     },
                     handleObligatoireChange() {
                         (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
                     },
+					handleNameChange() {
+						const name = this.getAttributes().name;
+						const value = this.getAttributes().value;
+
+						this.attributes.components.models.forEach(function(item){
+							item.attributes.components.models.forEach(function(child){
+								if(child.attributes.attributes.type == 'radio') {
+									child.setAttributes({
+										name: name,
+										type:"radio",
+										value: value
+									})
+									console.log(child, name, value)
+								}
+							})
+						})
+					},
 					handleChange() {
 						this.addClass(this.getId());
 					}
@@ -1478,28 +1541,27 @@ echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
             traits: [{default: {}}],
             content: {
                 type: typeFieldInput,
-                attributes: {class: "div-block"},
-                components: [{
-                    tagName: 'div',
-                    droppable: false,
-                    draggable: false,
-                    selectable: false,
-                    components: [
-                        {
-                            type: 'label',
-                            attributes: {
-                                class: "form-label label"
-                            },
-                        },
-                        {
-                            type: 'input',
-                            attributes: {
-                                type:'text',
-                                class: "input answer"
-                            },
-                        }
-                    ]
-                }]
+                components: [
+					{
+						type: 'label',
+						attributes: {
+							class: "form-label label"
+						},
+						droppable: false,
+						draggable: false,
+						selectable: true,
+					},
+					{
+						type: 'input',
+						attributes: {
+							type:'text',
+							class: "div-block input answer"
+						},
+						droppable: false,
+						draggable: false,
+						selectable: true,
+					}
+                ]
             }
         });
 

@@ -8,6 +8,32 @@ Author URI: http://maarouanezizah.com
 Version: 0.1
 */
 
+
+function add_form_menu(){
+    add_menu_page(
+        __('Forms'),		//Page title
+        __('Forms'),		//Menu title
+        'edit_themes',		//Capability
+        'form/list.php',	//Menu slug
+    );
+
+    add_submenu_page(
+        'form/list.php', 	//Parent
+        __('New Form'),  	//Page title
+        __('New Form'),  	//Menu title
+        'edit_themes',   	//Capability,
+        'form/form.php', 	//menu slug
+    );
+}
+
+
+add_action('admin_menu', 'add_form_menu');
+
+
+
+
+
+
 function html_form_code() {
 	echo '
 	<div class="div-block-12" id="FormInner">
@@ -270,64 +296,4 @@ function cf_shortcode() {
     return ob_get_clean();
 }
 
-
 add_shortcode( 'mz_contact_form', 'cf_shortcode' );
-
-
-function getFormsList() {
-
-    $forms = get_posts([
-        'post_type'   => 'game_form',
-        'post_status' => 'draft',
-    ]);
-
-    echo "Forms list";
-
-    echo '
-        <table>
-            <thead>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Statut</th>
-                <th>Created at</th>
-                <th>Actions</th>
-            </thead>
-            <tbody>';
-    foreach ($forms as $form) {
-        echo '<tr>';
-        echo '<td>'.$form->ID.'</td>';
-        echo '<td>'.$form->post_title.'</td>';
-        echo '<td>'.$form->post_status.'</td>';
-        echo '<td>'.$form->post_date.'</td>';
-        echo '<td>
-                <a href="/wp-admin/admin.php?page=form%2Fform.php&id='. $form->ID .'" target="_blank">Open</a>
-                <a href="/wp-content/plugins/form/render.php?id='. $form->ID .'" target="_blank">Preview</a>
-            </td>';
-        echo '</td>';
-    }
-    echo '</tbody>';
-    echo'</table>';
-}
-
-function add_form_menu(){
-    add_menu_page(
-        __('Forms'),// the page title
-        __('Forms'),//menu title
-        'edit_themes',//capability
-        'forms-list',//menu slug/handle this is what you need!!!
-        'getFormsList',//callback function
-        '',//icon_url,
-        ''//position
-    );
-
-    add_submenu_page(
-        'forms-list',
-        'Form editor', //page title
-        'Form editor', //menu title
-        'edit_themes', //capability,
-        'form/form.php',//menu slug
-    );
-}
-
-
-add_action('admin_menu', 'add_form_menu');
