@@ -8,22 +8,38 @@ Author URI: http://maarouanezizah.com
 Version: 0.1
 */
 
+// error_reporting(1);
+// ini_set('display_errors', '1');
+// ini_set('display_startup_errors', '1');
+// error_reporting(E_ALL);
 
 function add_form_menu(){
     add_menu_page(
-        __('Forms'),		//Page title
-        __('Forms'),		//Menu title
-        'edit_themes',		//Capability
-        'form/list.php',	//Menu slug
+        __('Forms'),
+        __('Forms'),
+        'edit_themes',
+		'form-list',
+		'form_list'
     );
 
     add_submenu_page(
-        'form/list.php', 	//Parent
+        'form-list', 	//Parent
         __('New Form'),  	//Page title
         __('New Form'),  	//Menu title
         'edit_themes',   	//Capability,
-        'form/form.php', 	//menu slug
+        'form-editor', 	//menu slug
+        'form_editor', 	//menu slug
     );
+}
+
+function form_list()
+{
+	include plugin_dir_path(__FILE__) . 'list.php';
+}
+
+function form_editor()
+{
+	include plugin_dir_path(__FILE__) . 'form.php';
 }
 
 

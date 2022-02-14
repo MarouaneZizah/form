@@ -7,6 +7,7 @@ $forms = get_posts([
 	'post_type'   => 'game_form',
 	'post_status' => 'all',
 ]);
+
 ?>
 	<table class="table">
 		<thead>
