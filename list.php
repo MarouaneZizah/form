@@ -25,8 +25,8 @@ $forms = get_posts([
 				echo '<td>'.'</td>';
 				echo '<td>'.$form->post_date.'</td>';
 				echo '<td>
-						<a href="/wp-admin/admin.php?page=form%2Fform.php&id='. $form->ID .'" target="_blank">Open</a>
-						<a href="/wp-content/plugins/form/render.php?id='. $form->ID .'" target="_blank">Preview</a>
+						<a href="/wp-content/plugins/form/form.php?id='. $form->ID .'" target="_blank">Edit</a>
+						<a href="/wp-content/plugins/form/render.php?id='. $form->ID .'" target="_blank">View</a>
 					</td>';
 				echo '</tr>';
 			}?>

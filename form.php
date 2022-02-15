@@ -1,4 +1,15 @@
 <?php
+
+error_reporting(1);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+session_start();
+
+require_once( explode( "wp-content" , __FILE__ )[0] . "wp-load.php" );
+include_once( ABSPATH . 'wp-includes/pluggable.php' );
+
 echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/fontawesome/css/all.min.css">';
 echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/bulma.css">';
 echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/grapes.min.css">';
