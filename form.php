@@ -158,11 +158,6 @@ if(!$form) {
             type: 'text',
         };
 
-        const requiredTrait = {
-            type: 'checkbox',
-            name: 'required',
-        };
-
         const hiddenTrait = {
             type: 'checkbox',
             name: 'hidden',
@@ -646,7 +641,6 @@ if(!$form) {
 						traits: [
 							nextStepTrait,
 							nameTrait,
-							requiredTrait,
 							inputTypeTrait
 						],
                     },
@@ -689,7 +683,6 @@ if(!$form) {
                         traits: [
                             colonneTrait,
 							nameTrait,
-                            requiredTrait
                         ]
                     },
 					init() {
@@ -742,7 +735,6 @@ if(!$form) {
                                 name: 'options',
                                 type: 'select-options'
                             },
-                            requiredTrait
                         ],
                     },
                     init() {
@@ -772,7 +764,6 @@ if(!$form) {
                             idTrait,
                             colonneTrait,
                             valueTrait,
-                            requiredTrait,
                             checkedTrait
                         ],
                     },
@@ -815,7 +806,7 @@ if(!$form) {
                             tagName: 'span',
                         }
                         ],
-                        traits: [colonneTrait, labelTrait, requiredTrait,],
+                        traits: [colonneTrait, labelTrait],
                     },
 					init() {
 						this.on("change", this.handleChange);
@@ -900,8 +891,7 @@ if(!$form) {
                         copyable: false,
                         traits: [
                             idTrait,
-                            nextStepTrait,
-                            requiredTrait,
+                            nextStepTrait
                         ],
                     },
                     init() {
