@@ -862,6 +862,10 @@ input[type=radio] {
     align-items: center;
 }
 
+.radio-icon .radio-icon-img-container img {
+	cursor: pointer;
+}
+
 .radio-icon .radio-icon-input-container {
 	width: auto;
     height: auto;

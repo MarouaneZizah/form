@@ -33,39 +33,25 @@ if ($method == 'GET') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Script</title>
+    <title>Form</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <style>
         <?php echo $content_formatted['css']; ?>
     </style>
 </head>
 <body>
-<?php
-echo $content_formatted['html']; ?>
+<?php echo $content_formatted['html']; ?>
 </body>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
 <script>
-    var notyf = new Notyf();
+    /*var notyf = new Notyf();
 
     for (let required of document.querySelectorAll('.ct-obligatoire')) {
         required.parentElement.classList.add('ct-obligatoire-container')
     }
-
-    let radio_icon_options = document.querySelectorAll('.radio-icon');
-
-    radio_icon_options.forEach(option => {
-        option.addEventListener('click', function() {
-            if (this.children[2].tagName == "INPUT") {
-                this.children[2].click();
-            } else {
-                this.children[2].children[0].click();
-            }
-        })
-    });
 
     function checkRequired() {
         let required = document.querySelectorAll('.ct-obligatoire')
@@ -81,7 +67,7 @@ echo $content_formatted['html']; ?>
         }
 
         return true;
-    }
+    }*/
 
     function changeForm(current_selector, target_selector) {
         let current_step = $('#' + current_selector).closest("form");
@@ -90,29 +76,25 @@ echo $content_formatted['html']; ?>
         let isChecked = false;
         let answers = document.querySelectorAll('#'+current_selector+' .answer, #'+current_selector+' .input');
 
-        // console.log(current_selector, target_selector)
-        // console.log('changeForDm', current_step, target_step);
-
         answers.forEach((answer) => {
-			// console.log(answer.tagName)
+			console.log(answer, answer.checked)
 
-            if (answer.tagName == "INPUT") {
-                if (answer.type == "radio") {
-                    if (answer.checked) isChecked = true;
+            if (answer.tagName === "INPUT") {
+                if (answer.type === "radio" && answer.checked) isChecked = true;
+
+                if (answer.type === "email") {
+                    if (answer.value.length >= 7) isChecked = true;
                 }
 
-                if (answer.type == "text") {
+                if (answer.type === "text") {
 					const inputType = answer.getAttribute('input_type');
 
-                    if (inputType == 'code_postal') {
-                        if (answer.value.length == 5) isChecked = true;
+                    if (inputType === 'code_postal') {
+                        if (answer.value.length === 5) isChecked = true;
                         answer.classList.add("_valid");
-					} else if (inputType == 'telephone') {
+					} else if (inputType === 'telephone') {
                         if (answer.value.length > 9) isChecked = true;
-                    } else if (inputType == 'email') {
-
-						// console.log('is email')
-
+                    } else if (inputType === 'email') {
 						const regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 						if (!answer.value.match(regexp)) {
@@ -130,37 +112,27 @@ echo $content_formatted['html']; ?>
                         if (answer.value.length >= 2) isChecked = true;
                     }
                 }
-
-                if (answer.type == "email") {
-                    if (answer.value.length >= 7) isChecked = true;
-                }
-
             }
         });
-
-		if(!isChecked) {
-			// console.log('infos non vallide');
-			return;
-		}
-
-        // console.log('answers isChecked', isChecked);
 
         if (!answers) {
             isChecked = true;
         }
 
-        if (isChecked) {
-            current_step.hide();
-            target_step.show();
-            // $bar.css("width", ((curIndex + 2) / $forms.length) * 100 + "%");
-        } else {
-            console.log('Form not valid');
+        if (!isChecked) {
+            console.log('Step data not valid');
+            return;
         }
+
+        console.log('Step data valid');
+
+        current_step.hide();
+        target_step.show();
 
 		if(target_step[0]) {
 			const is_type_submit = target_step[0].getAttribute('data-type-submit');
 			const email 		 = target_step[0].getAttribute('data-submit-email');
-			const redurectionUrl = target_step[0].getAttribute('data-submit-redirection');
+			const redirectionUrl = target_step[0].getAttribute('data-submit-redirection');
 
 			if(is_type_submit !== null) {
 				let payload = [];
@@ -179,16 +151,26 @@ echo $content_formatted['html']; ?>
 				function(data, status){
 					console.log("Data: " + data + "\nStatus: " + status);
 
-					if(redurectionUrl !== null) {
-						window.location = redurectionUrl
+					if(redirectionUrl !== null) {
+						window.location = redirectionUrl
 					}
 				});
 			}
 		}
     }
 
+    document.querySelectorAll('.radio-icon').forEach(option => {
+        option.addEventListener('click', function() {
+            if (this.children[2].tagName === "INPUT") {
+                this.children[2].click();
+            } else {
+                this.children[2].children[0].click();
+            }
+        })
+    });
 
-    $('.step-container .radio-icon img').click(function (event) {
+    //Radio Icon Event
+    $('.step-container .radio-icon input.answer').click(function (event) {
         // Don't follow the link
         event.preventDefault();
 
@@ -200,6 +182,7 @@ echo $content_formatted['html']; ?>
         }
     });
 
+    //Normal Input Event
     $('.step-container input.input.answer').keyup(function (event) {
         // Don't follow the link
         event.preventDefault();
@@ -211,6 +194,5 @@ echo $content_formatted['html']; ?>
             changeForm(origin_id, target_id)
         }
     });
-
 </script>
 </html>

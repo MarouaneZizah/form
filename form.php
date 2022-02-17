@@ -191,17 +191,6 @@ if(!$form) {
             name: 'checked',
         };
 
-        /*const script = function () {
-            document.addEventListener('click', function (event) {
-                let target_id = (event.target.closest('.div-block')) ? event.target.closest('.div-block').getAttribute('target_id') : null
-                let origin_id = (event.target.closest('.step-container')) ?  event.target.closest('.step-container').getAttribute('id') : null
-
-				if(target_id && origin_id) {
-					changeForm(origin_id, target_id)
-				}
-            });
-        };*/
-
         const myNewComponentTypes = editor => {
             const components = editor.DomComponents
 
