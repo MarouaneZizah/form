@@ -191,7 +191,7 @@ if(!$form) {
             name: 'checked',
         };
 
-        const script = function () {
+        /*const script = function () {
             document.addEventListener('click', function (event) {
                 let target_id = (event.target.closest('.div-block')) ? event.target.closest('.div-block').getAttribute('target_id') : null
                 let origin_id = (event.target.closest('.step-container')) ?  event.target.closest('.step-container').getAttribute('id') : null
@@ -200,7 +200,7 @@ if(!$form) {
 					changeForm(origin_id, target_id)
 				}
             });
-        };
+        };*/
 
         const myNewComponentTypes = editor => {
             const components = editor.DomComponents
@@ -660,7 +660,6 @@ if(!$form) {
                 isComponent: el => el.tagName == 'INPUT',
                 model: {
                     defaults: {
-                        script,
                         tagName: 'input',
                         draggable: true,
                         droppable: true,
@@ -882,7 +881,6 @@ if(!$form) {
                 isComponent: el => el.tagName == 'INPUT' && el.type == 'radio',
                 model: {
                     defaults: {
-                        script,
                         highlightable: true,
                         selectable: true,
                         draggable: true,
@@ -936,7 +934,6 @@ if(!$form) {
                 isComponent: el => el.tagName == 'INPUT',
                 model: {
                     defaults: {
-                        script,
                         highlightable: true,
                         selectable: true,
                         draggable: true,
@@ -1082,7 +1079,6 @@ if(!$form) {
 
                 model: {
                     defaults: {
-                        script,
                         tagName: 'button',
                         droppable: false,
                         attributes: {type: 'button', class: "button h-button goto-node m-1"},
@@ -1419,7 +1415,7 @@ if(!$form) {
 
         editor.Commands.add('exit-script', {
             run(editor, sender) {
-                window.location.href = `{{ route('scripts') }}`;
+                window.location.href = "/wp-admin/admin.php?page=form-list";
             }
         });
 

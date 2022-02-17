@@ -187,5 +187,30 @@ echo $content_formatted['html']; ?>
 		}
     }
 
+
+    $('.step-container .radio-icon img').click(function (event) {
+        // Don't follow the link
+        event.preventDefault();
+
+        let target_id = (event.target.closest('.div-block')) ? event.target.closest('.div-block').getAttribute('target_id') : null
+        let origin_id = (event.target.closest('.step-container')) ?  event.target.closest('.step-container').getAttribute('id') : null
+
+        if(target_id && origin_id) {
+            changeForm(origin_id, target_id)
+        }
+    });
+
+    $('.step-container input.input.answer').keyup(function (event) {
+        // Don't follow the link
+        event.preventDefault();
+
+        let target_id = (event.target.closest('.div-block')) ? event.target.closest('.div-block').getAttribute('target_id') : null
+        let origin_id = (event.target.closest('.step-container')) ?  event.target.closest('.step-container').getAttribute('id') : null
+
+        if(target_id && origin_id) {
+            changeForm(origin_id, target_id)
+        }
+    });
+
 </script>
 </html>
