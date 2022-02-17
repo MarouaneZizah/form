@@ -897,13 +897,14 @@ if(!$form) {
                     },
                     init() {
 						this.on("change", this.handleChange);
-						this.on('change:attributes:name', this.handleNameChange);
+                        this.on('change:attributes:name', this.handleNameValueChange);
+                        this.on('change:attributes:value', this.handleNameValueChange);
                         this.on('change:attributes:obligatoire', this.handleObligatoireChange);
                     },
                     handleObligatoireChange() {
                         (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
                     },
-					handleNameChange() {
+					handleNameValueChange() {
 						const name = this.getAttributes().name;
 						const value = this.getAttributes().value;
 
@@ -912,10 +913,10 @@ if(!$form) {
 								if(child.attributes.attributes.type == 'radio') {
 									child.setAttributes({
 										name: name,
-										type:"radio",
+										type: 'radio',
 										value: value
 									})
-									console.log(child, name, value)
+									console.log(name, value)
 								}
 							})
 						})
