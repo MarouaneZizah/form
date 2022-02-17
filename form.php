@@ -160,7 +160,7 @@ if(!$form) {
 
         const requiredTrait = {
             type: 'checkbox',
-            name: 'obligatoire',
+            name: 'required',
         };
 
         const hiddenTrait = {
@@ -621,26 +621,13 @@ if(!$form) {
                         ],
                     },
                     init() {
-                        this.on('change:attributes:obligatoire', this.handleObligatoireChange);
-                        this.on('change:attributes:hidden', this.onHiddenChange);
 						this.on("change", this.handleChange);
                     },
-                    onHiddenChange() {
-                        (this.getAttributes().hidden) ? this.addClass('hide') : this.removeClass('hide');
-                    },
-                    handleObligatoireChange() {
-                        let obligatoire = this.getAttributes().obligatoire
-                        this.setClass(`input form-ct-input ${obligatoire ? 'ct-obligatoire' : ''}`);
-                    },
 					handleChange() {
-						this.addClass(this.getId());
-					}
-                },
+                        this.addClass(this.getId());
 
-                view: {
-                    events: {
-                        submit: e => e.preventDefault(),
-                    }
+                        (this.getAttributes().hidden) ? this.addClass('hide') : this.removeClass('hide');
+					}
                 },
             });
 
@@ -665,16 +652,12 @@ if(!$form) {
                     },
                     init() {
                         this.on('change:attributes:input_type', this.handleInputTypeChange);
-                        this.on('change:attributes:obligatoire', this.handleObligatoireChange);
                         this.on('change:attributes:name', this.handleNameChange);
 						this.on("change", this.handleChange);
                     },
 					handleInputTypeChange() {
 						this.set('data-type', this.getAttributes().input_type)
 					},
-                    handleObligatoireChange() {
-                        (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
-                    },
                     handleNameChange() {
 
                     },
@@ -711,13 +694,9 @@ if(!$form) {
                     },
 					init() {
 						this.on("change", this.handleChange);
-						this.on('change:attributes:obligatoire', this.handleObligatoireChange);
                     },
 					handleChange() {
 						this.addClass(this.getId());
-					},
-					handleObligatoireChange() {
-						// (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
 					},
                 },
             });
@@ -767,12 +746,7 @@ if(!$form) {
                         ],
                     },
                     init() {
-                        this.on('change:attributes:obligatoire', this.handleObligatoireChange);
 						this.on("change", this.handleChange);
-                    },
-                    handleObligatoireChange() {
-                        let obligatoire = this.getAttributes().obligatoire
-                        this.setClass(`input form-ct-input ${obligatoire ? 'ct-obligatoire' : ''}`);
                     },
 					handleChange() {
 						this.addClass(this.getId());
@@ -886,10 +860,6 @@ if(!$form) {
 						this.on("change", this.handleChange);
                         this.on('change:attributes:name', this.handleNameValueChange);
                         this.on('change:attributes:value', this.handleNameValueChange);
-                        this.on('change:attributes:obligatoire', this.handleObligatoireChange);
-                    },
-                    handleObligatoireChange() {
-                        (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
                     },
 					handleNameValueChange() {
 						const name = this.getAttributes().name;
@@ -936,10 +906,6 @@ if(!$form) {
                     },
                     init() {
 						this.on("change", this.handleChange);
-                        this.on('change:attributes:obligatoire', this.handleObligatoireChange);
-                    },
-                    handleObligatoireChange() {
-                        (this.getAttributes().obligatoire) ? this.addClass('ct-obligatoire') : this.removeClass('ct-obligatoire');
                     },
 					handleChange() {
 						this.addClass(this.getId());
