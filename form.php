@@ -390,7 +390,7 @@ if(!$form) {
                                 attributes: {'class': 'column is-12'},
                                 draggable: false,
                                 copyable: false,
-                                selectable: false,
+                                selectable: true,
                             }
                         ]
                     },
@@ -411,6 +411,7 @@ if(!$form) {
                     defaults: {
                         tagName: 'div',
                         droppable: false,
+                        selectable: true,
                         attributes: {'class': 'columns two-column mx-0 my-2 cadre_script', 'visible': true},
                         components: [
                             {
@@ -418,14 +419,14 @@ if(!$form) {
                                 attributes: {'class': 'column is-half mb-0'},
                                 draggable: false,
                                 copyable: false,
-                                selectable: false,
+                                selectable: true,
                             },
                             {
                                 tagName: 'div',
                                 attributes: {'class': 'column is-half mb-0'},
                                 draggable: false,
                                 copyable: false,
-                                selectable: false,
+                                selectable: true,
                             }
                         ]
                     },
@@ -452,21 +453,21 @@ if(!$form) {
                                 attributes: {'class': 'column is-4 mb-0'},
                                 draggable: false,
                                 copyable: false,
-                                selectable: false,
+                                selectable: true,
                             },
                             {
                                 tagName: 'div',
                                 attributes: {'class': 'column is-4 mb-0'},
                                 draggable: false,
                                 copyable: false,
-                                selectable: false,
+                                selectable: true,
                             },
                             {
                                 tagName: 'div',
                                 attributes: {'class': 'column is-4 mb-0'},
                                 draggable: false,
                                 copyable: false,
-                                selectable: false,
+                                selectable: true,
                             }
                         ]
                     },
@@ -493,21 +494,21 @@ if(!$form) {
                                 attributes: {'class': 'column is-3 mb-0'},
                                 draggable: false,
                                 copyable: false,
-                                selectable: false,
+                                selectable: true,
                             },
                             {
                                 tagName: 'div',
                                 attributes: {'class': 'column is-3 mb-0'},
                                 draggable: false,
                                 copyable: false,
-                                selectable: false,
+                                selectable: true,
                             },
                             {
                                 tagName: 'div',
                                 attributes: {'class': 'column is-3 mb-0'},
                                 draggable: false,
                                 copyable: false,
-                                selectable: false,
+                                selectable: true,
                             },
                             {
                                 tagName: 'div',
@@ -562,7 +563,6 @@ if(!$form) {
             });
 
             components.addType(typeCadre9_3Col, {
-                // extend: typeCadre,
                 isComponent: el => el.tagName == 'DIV' && el.classList.contains('three-nine-column'),
 
                 model: {
