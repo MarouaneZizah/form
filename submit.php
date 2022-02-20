@@ -16,7 +16,7 @@
 			$message = "";
 
 			foreach ($_POST['data'] as $data) {
-				$message .= $data['name']." : ".sanitize_text_field( $data["value"] )."</br>";
+				$message .= $data['name']." : ".sanitize_text_field( $data["value"] )."\n";
 			}
 
 			$email = sanitize_text_field($_POST['email']);

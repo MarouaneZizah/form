@@ -77,7 +77,7 @@ if ($method == 'GET') {
         let answers = document.querySelectorAll('#'+current_selector+' .answer, #'+current_selector+' .input');
 
         answers.forEach((answer) => {
-			console.log(answer, answer.checked)
+			console.log(answer, answer.type, answer.checked)
 
             if (answer.tagName === "INPUT") {
                 if (answer.type === "radio" && answer.checked) isChecked = true;
@@ -89,26 +89,36 @@ if ($method == 'GET') {
                 if (answer.type === "text") {
 					const inputType = answer.getAttribute('input_type');
 
-                    if (inputType === 'code_postal') {
+                    console.log('inputType', inputType)
+                    if (inputType === 'code_postal')
+                    {
                         if (answer.value.length === 5) isChecked = true;
                         answer.classList.add("_valid");
-					} else if (inputType === 'telephone') {
+					}
+                    else if (inputType === 'telephone')
+                    {
                         if (answer.value.length > 9) isChecked = true;
-                    } else if (inputType === 'email') {
+                    }
+                    else if (inputType === 'email')
+                    {
 						const regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-						if (!answer.value.match(regexp)) {
+						if (!answer.value.match(regexp))
+                        {
 							answer.classList.add('_error');
 							answer.classList.remove("_valid");
 
 						}
-						else {
+						else
+                        {
 							answer.classList.remove('_error');
 							answer.classList.add("_valid");
 
 							isChecked = true;
 						}
-                    } else {
+                    }
+                    else
+                    {
                         if (answer.value.length >= 2) isChecked = true;
                     }
                 }
@@ -126,47 +136,50 @@ if ($method == 'GET') {
 
         console.log('Step data valid');
 
+        if(current_step[0]) {
+            const is_type_submit = current_step[0].getAttribute('data-type-submit');
+            const email 		 = current_step[0].getAttribute('data-submit-email');
+            const redirectionUrl = current_step[0].getAttribute('data-submit-redirection');
+
+            console.log('is_type_submit', is_type_submit)
+            console.log('email', email)
+
+            if(is_type_submit !== null) {
+                let payload = [];
+                let forms 	= document.querySelectorAll('form');
+
+                forms.forEach((form) => {
+                    let data 		= new FormData(form)
+                    let formData 	= Array.from(data.entries())
+
+                    console.log(formData)
+
+                    for (const [name, value] of formData) {
+                        payload.push({ name, value })
+                    }
+                });
+
+                console.log('payload', payload);
+
+                $.post("/wp-content/plugins/form/submit.php", { email: email, data: payload },
+                    function(data, status){
+                        console.log("Data: " + data + "\nStatus: " + status);
+
+                        if(redirectionUrl !== null) {
+                            window.location = redirectionUrl
+                        }
+                    });
+            }
+        }
+
         current_step.hide();
         target_step.show();
-
-		if(target_step[0]) {
-			const is_type_submit = target_step[0].getAttribute('data-type-submit');
-			const email 		 = target_step[0].getAttribute('data-submit-email');
-			const redirectionUrl = target_step[0].getAttribute('data-submit-redirection');
-
-			if(is_type_submit !== null) {
-				let payload = [];
-				let forms 	= document.querySelectorAll('form');
-
-				forms.forEach((form) => {
-					let data 		= new FormData(form)
-					let formData 	= Array.from(data.entries())
-
-					for (const [name, value] of formData) {
-						payload.push({ name, value })
-					}
-				});
-
-				$.post("/wp-content/plugins/form/submit.php", { email: email, data: payload },
-				function(data, status){
-					console.log("Data: " + data + "\nStatus: " + status);
-
-					if(redirectionUrl !== null) {
-						window.location = redirectionUrl
-					}
-				});
-			}
-		}
     }
 
-    document.querySelectorAll('.radio-icon').forEach(option => {
-        option.addEventListener('click', function() {
-            if (this.children[2].tagName === "INPUT") {
-                this.children[2].click();
-            } else {
-                this.children[2].children[0].click();
-            }
-        })
+
+    $('.radio-icon').click(function () {
+        $(this).find("input[type=radio]").prop("checked", true);
+        $(this).find("input[type=radio]").get(0).click();
     });
 
     //Radio Icon Event
