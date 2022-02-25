@@ -86,7 +86,6 @@ if(!$form) {
     const typeRadioIcon = 'radio-icon';
     const typeRadio = 'radio';
     const typeButton = 'button';
-    const typeButtonGotoNode = 'button-goto';
     const typeLabel = 'label';
     const typeOption = 'option';
 
@@ -639,7 +638,6 @@ if(!$form) {
                         selectable: true,
                         attributes: {type: 'text', class: "input form-input"},
 						traits: [
-							nextStepTrait,
 							nameTrait,
 							inputTypeTrait
 						],
@@ -668,7 +666,6 @@ if(!$form) {
                 }
             });
 
-            // TEXTAREA
             components.addType(typeTextarea, {
                 //extend: typeInput,
                 isComponent: el => el.tagName == 'TEXTAREA',
@@ -694,7 +691,6 @@ if(!$form) {
                 },
             });
 
-            // OPTION
             components.addType(typeOption, {
                 isComponent: el => el.tagName == 'OPTION',
                 model: {
@@ -716,7 +712,6 @@ if(!$form) {
 
             const createOption = (value, name) => ({type: typeOption, components: name, attributes: {value}});
 
-            // SELECT
             components.addType(typeSelect, {
                 extend: typeInput,
                 isComponent: el => el.tagName == 'SELECT',
@@ -752,7 +747,6 @@ if(!$form) {
                 },
             });
 
-            // CHECKBOX
             components.addType(typeCheckbox, {
                 extend: typeInput,
                 isComponent: el => el.tagName == 'INPUT' && el.type == 'checkbox',
@@ -790,7 +784,6 @@ if(!$form) {
                 },
             });
 
-            // CHECKBOX LABEL
             components.addType(typeCheckboxLabel, {
                 extend: typeInput,
                 isComponent: el => el.tagName == 'INPUT' && el.type == 'checkbox',
@@ -890,8 +883,7 @@ if(!$form) {
                         droppable: true,
                         copyable: false,
                         traits: [
-                            idTrait,
-                            nextStepTrait
+                            idTrait
                         ],
                     },
                     init() {
@@ -908,7 +900,6 @@ if(!$form) {
                 },
             });
 
-            // RADIO
             components.addType(typeRadio, {
                 extend: typeCheckbox,
                 isComponent: el => el.tagName == 'INPUT' && el.type == 'radio',
@@ -938,6 +929,8 @@ if(!$form) {
                         attributes: {type: 'button', class: "button h-button is-primary"},
                         text: 'Valider',
                         traits: [
+                            idTrait,
+                            nextStepTrait,
                             {
                                 name: 'text',
                                 changeProp: true,
@@ -962,7 +955,7 @@ if(!$form) {
                                     {value: 'light'},
                                     {value: 'dark'},
                                 ]
-                            }
+                            },
                         ]
                     },
                     init() {
@@ -978,7 +971,6 @@ if(!$form) {
                         this.on('change:attributes:clair', this.__onClairChange);
                         (text !== chCnt) && this.__onTextChange();
                     },
-
                     __onTextChange() {
                         this.components(this.get('text'));
                     },
@@ -1004,96 +996,6 @@ if(!$form) {
                             this.setClass(`button h-button is-${color} ${outlined} is-light`);
                         } else {
                             this.setClass(`button h-button is-${color} ${outlined}`);
-                        }
-                    },
-					handleChange() {
-						this.addClass(this.getId());
-					}
-                },
-
-                view: {
-                    events: {
-                        click: e => e.preventDefault(),
-                    },
-                },
-            });
-
-            components.addType(typeButtonGotoNode, {
-                extend: typeInput,
-                isComponent: el => el.tagName == 'BUTTON' && el.classList.contains('goto-node'),
-
-                model: {
-                    defaults: {
-                        tagName: 'button',
-                        droppable: false,
-                        attributes: {type: 'button', class: "button h-button goto-node m-1"},
-                        text: 'Goto',
-                        traits: [
-                            {
-                                name: 'outlined',
-                                type: 'checkbox'
-                            },
-                            {
-                                name: 'clair',
-                                type: 'checkbox'
-                            },
-                            {
-                                type: 'select',
-                                name: 'couleur',
-                                options: [
-                                    {value: 'primary'},
-                                    {value: 'success'},
-                                    {value: 'info'},
-                                    {value: 'danger'},
-                                    {value: 'warning'},
-                                    {value: 'light'},
-                                    {value: 'dark'},
-                                ]
-                            },
-                            {
-                                name: 'text',
-                                changeProp: true,
-                            }]
-                    },
-                    init() {
-						this.on("change", this.handleChange);
-                        const comps = this.components();
-                        const tChild = comps.length === 1 && comps.models[0];
-                        const chCnt = (tChild && tChild.is('textnode') && tChild.get('content')) || '';
-                        const text = chCnt || this.get('text');
-                        this.set({text});
-                        this.on('change:text', this.__onTextChange);
-                        this.on('change:attributes:couleur', this.__onColorChange);
-                        this.on('change:attributes:outlined', this.__onOutlinedChange);
-                        this.on('change:attributes:clair', this.__onClairChange);
-                        (text !== chCnt) && this.__onTextChange();
-                    },
-
-                    __onTextChange() {
-                        this.components(this.get('text'));
-                    },
-                    __onColorChange() {
-                        let color = this.getAttributes().couleur
-                        let outlined = (this.getAttributes().outlined ? 'is-outlined' : '')
-                        let clair = (this.getAttributes().clair ? 'is-light' : '')
-                        this.setClass(`button h-button goto-node m-1 is-${color} ${clair} ${outlined}`);
-                    },
-                    __onOutlinedChange() {
-                        let color = this.getAttributes().couleur
-                        let clair = (this.getAttributes().clair ? 'is-light' : '')
-                        if (this.getAttributes().outlined) {
-                            this.setClass(`button h-button goto-node m-1 is-${color} ${clair} is-outlined`);
-                        } else {
-                            this.setClass(`button h-button goto-node m-1 is-${color} ${clair}`);
-                        }
-                    },
-                    __onClairChange() {
-                        let color = this.getAttributes().couleur
-                        let outlined = (this.getAttributes().outlined ? 'is-outlined' : '')
-                        if (this.getAttributes().clair) {
-                            this.setClass(`button h-button goto-node m-1 is-${color} ${outlined} is-light`);
-                        } else {
-                            this.setClass(`button h-button goto-node m-1 is-${color} ${outlined}`);
                         }
                     },
 					handleChange() {
@@ -1248,7 +1150,6 @@ if(!$form) {
             fromElement: true,
             height: '100%',
             width: 'auto',
-            storageManager: false,
             plugins: [myNewComponentTypes],
             storageManager: {
                 type: 'remote',
@@ -1352,11 +1253,13 @@ if(!$form) {
         // Define commands
         editor.Commands.add('save-script', {
             run(editor, sender) {
-                editor.store(res => {
-                    alert('Script Enregistré')
-                });
-            },
+                editor.store(successMessage());
+            }
         });
+
+        function successMessage() {
+            alert('Script Enregistré');
+        }
 
         editor.Commands.add('exit-script', {
             run(editor, sender) {
@@ -1751,22 +1654,16 @@ if(!$form) {
             }
         });
 
-        editor.Blocks.add(typeButtonGotoNode, {
-            label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Goto</span>',
+        editor.Blocks.add(typeButton, {
+            label: '<span class="has-text-grey-lighter is-weight-900 rem-90">Button</span>',
             media: `<span class="has-text-grey-lighter">
-                <i class="fal fa-exchange fa-3x mb-3"></i>
+                <i class="fa fa-hand-pointer-o fa-3x mb-3"></i>
                 </span>`,
             category: catActions,
             select: true,
             traits: [{default: {}}],
             content: {
-                tagName: 'div',
-                attributes: {class: "field"},
-                droppable: false,
-                selectable: false,
-                components: [
-                    {type: typeButtonGotoNode},
-                ]
+                type: typeButton,
             }
         });
 

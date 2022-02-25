@@ -172,6 +172,9 @@ if ($method == 'GET') {
             }
         }
 
+        console.log('current_step', current_step)
+        console.log('target_step', target_step)
+
         current_step.hide();
         target_step.show();
     }
@@ -187,8 +190,8 @@ if ($method == 'GET') {
         // Don't follow the link
         event.preventDefault();
 
-        let target_id = (event.target.closest('.div-block')) ? event.target.closest('.div-block').getAttribute('target_id') : null
-        let origin_id = (event.target.closest('.step-container')) ?  event.target.closest('.step-container').getAttribute('id') : null
+        let target_id = event.target.closest('.div-block').getAttribute('target_id') ?? null
+        let origin_id = event.target.closest('.step-container').getAttribute('id') ?? null
 
         if(target_id && origin_id) {
             changeForm(origin_id, target_id)
@@ -196,12 +199,12 @@ if ($method == 'GET') {
     });
 
     //Normal Input Event
-    $('.step-container input.input.answer').keyup(function (event) {
+    $('.step-container button.button').click(function (event) {
         // Don't follow the link
         event.preventDefault();
 
-        let target_id = (event.target.closest('.div-block')) ? event.target.closest('.div-block').getAttribute('target_id') : null
-        let origin_id = (event.target.closest('.step-container')) ?  event.target.closest('.step-container').getAttribute('id') : null
+        let target_id = event.target.getAttribute('target_id') ?? null
+        let origin_id = event.target.closest('.step-container').getAttribute('id') ?? null
 
         if(target_id && origin_id) {
             changeForm(origin_id, target_id)
