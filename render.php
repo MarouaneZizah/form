@@ -69,7 +69,7 @@ if ($method == 'GET') {
         return true;
     }*/
 
-    function changeForm(current_selector, target_selector) {
+    function changeForm(current_selector, target_selector = null) {
         let current_step = $('#' + current_selector).closest("form");
         let target_step = $('#' + target_selector).closest("form");
 
@@ -138,11 +138,11 @@ if ($method == 'GET') {
 
         if(current_step[0]) {
             const is_type_submit = current_step[0].getAttribute('data-type-submit');
-            const email 		 = current_step[0].getAttribute('data-submit-email');
+            const emails 		 = current_step[0].getAttribute('data-submit-emails');
             const redirectionUrl = current_step[0].getAttribute('data-submit-redirection');
 
             console.log('is_type_submit', is_type_submit)
-            console.log('email', email)
+            console.log('emails', emails)
 
             if(is_type_submit !== null) {
                 let payload = [];
@@ -161,7 +161,7 @@ if ($method == 'GET') {
 
                 console.log('payload', payload);
 
-                $.post("/wp-content/plugins/form/submit.php", { email: email, data: payload },
+                $.post("/wp-content/plugins/form/submit.php", { emails: emails, data: payload },
                     function(data, status){
                         console.log("Data: " + data + "\nStatus: " + status);
 
@@ -176,7 +176,10 @@ if ($method == 'GET') {
         console.log('target_step', target_step)
 
         current_step.hide();
-        target_step.show();
+
+        if(target_step) {
+            target_step.show();
+        }
     }
 
 
@@ -206,8 +209,15 @@ if ($method == 'GET') {
         let target_id = event.target.getAttribute('target_id') ?? null
         let origin_id = event.target.closest('.step-container').getAttribute('id') ?? null
 
-        if(target_id && origin_id) {
+        if(origin_id) {
             changeForm(origin_id, target_id)
+        }
+    });
+
+    $('form input').keydown(function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            return false;
         }
     });
 </script>

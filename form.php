@@ -168,10 +168,10 @@ if(!$form) {
             label: 'Submit',
         };
 
-		const submitEmail = {
+		const submitEmails = {
             type: 'text',
-            name: 'data-submit-email',
-            label: 'Email',
+            name: 'data-submit-emails',
+            label: 'Emails (seperated by comma)',
         };
 
 		const submitRedirectionUrl = {
@@ -610,7 +610,7 @@ if(!$form) {
                             idTrait,
                             hiddenTrait,
                             isTypeSubmit,
-							submitEmail,
+							submitEmails,
 							submitRedirectionUrl,
                         ],
                     },

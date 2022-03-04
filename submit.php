@@ -19,14 +19,14 @@
 				$message .= $data['name']." : ".sanitize_text_field( $data["value"] )."\n";
 			}
 
-			$email = sanitize_text_field($_POST['email']);
+			$emails = sanitize_text_field($_POST['email']);
 
-			if(!$email) {
+			if(!$emails) {
 				$email = get_option( 'admin_email' );
 			}
 
 			$subject = "New contact";
-			$to 	 = $email;
+			$to 	 = $emails;
 			$headers = "From: Admin <".get_option('admin_email').">" . "\r\n";
 
 			// If email has been process for sending, display a success message
