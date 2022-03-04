@@ -19,7 +19,7 @@
 				$message .= $data['name']." : ".sanitize_text_field( $data["value"] )."\n";
 			}
 
-			$emails = sanitize_text_field($_POST['email']);
+			$emails = sanitize_text_field($_POST['emails']);
 
 			if(!$emails) {
 				$email = get_option( 'admin_email' );
