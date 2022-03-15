@@ -1,29 +1,30 @@
 <?php
-	session_start();
+    error_reporting(1);
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
 
 	require_once( explode( "wp-content" , __FILE__ )[0] . "wp-load.php" );
 	include_once( ABSPATH . 'wp-includes/pluggable.php' );
-
-	// error_reporting(1);
-	// ini_set('display_errors', '1');
-	// ini_set('display_startup_errors', '1');
-	// error_reporting(E_ALL);
 
 	$method = $_SERVER['REQUEST_METHOD'];
 
 	switch ($method) {
 		case 'POST':
+            $emails     = sanitize_text_field($_POST['emails']);
+            $origin_url = sanitize_text_field($_POST['origin_url']);
+
+            if(!$emails) {
+                $email = get_option( 'admin_email' );
+            }
+
 			$message = "";
 
 			foreach ($_POST['data'] as $data) {
 				$message .= $data['name']." : ".sanitize_text_field( $data["value"] )."\n";
 			}
 
-			$emails = sanitize_text_field($_POST['emails']);
-
-			if(!$emails) {
-				$email = get_option( 'admin_email' );
-			}
+            $message .= "Source : ".$origin_url."\n";
 
 			$subject = "New contact";
 			$to 	 = $emails;

@@ -1,13 +1,12 @@
 <?php
-session_start();
-
-require_once(explode("wp-content", __FILE__)[0]."wp-load.php");
-include_once(ABSPATH.'wp-includes/pluggable.php');
 
 error_reporting(1);
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
+
+require_once(explode("wp-content", __FILE__)[0]."wp-load.php");
+include_once(ABSPATH.'wp-includes/pluggable.php');
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -161,7 +160,11 @@ if ($method == 'GET') {
 
                 console.log('payload', payload);
 
-                $.post("/wp-content/plugins/form/submit.php", { emails: emails, data: payload },
+                const origin_url = (window.location != window.parent.location)
+                    ? document.referrer
+                    : document.location.href;
+
+                $.post("/wp-content/plugins/form/submit.php", { emails: emails, origin_url: origin_url, data: payload },
                     function(data, status){
                         console.log("Data: " + data + "\nStatus: " + status);
 
