@@ -10,7 +10,7 @@ add_action( 'parse_request', function( $wp ){
         $_GET['form_id'] = urldecode($form_id);
 
         // Load your file - make sure the path is correct.
-        include_once WP_CONTENT_DIR . '/plugins/form/render.php';
+        include_once WP_CONTENT_DIR . '/plugins/better-form/render.php';
         exit; // and exit
     }
 
@@ -22,15 +22,15 @@ add_action( 'parse_request', function( $wp ){
         $_GET['form_id'] = urldecode($form_id);
 
         // Load your file - make sure the path is correct.
-        include_once WP_CONTENT_DIR . '/plugins/form/form.php';
+        include_once WP_CONTENT_DIR . '/plugins/better-form/form.php';
         exit; // and exit
     }
 });
 
 /*function custom_rewrite_basic()
 {
-    add_rewrite_rule('better-form/edit/([0-9]+)/?', 'wp-content/plugins/form/form.php?form_id=$matches[1]', 'top');
-    add_rewrite_rule('better-form/view/([0-9]+)/?', 'wp-content/plugins/form/render.php?form_id=$matches[1]', 'top');
+    add_rewrite_rule('better-form/edit/([0-9]+)/?', 'wp-content/plugins/better-form/form.php?form_id=$matches[1]', 'top');
+    add_rewrite_rule('better-form/view/([0-9]+)/?', 'wp-content/plugins/better-form/render.php?form_id=$matches[1]', 'top');
 }*/
 
 //add_action('init', 'custom_rewrite_basic', 10, 0);

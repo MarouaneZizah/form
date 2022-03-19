@@ -143,7 +143,7 @@ jQuery(document).ready(function($) {
 
         $.ajax({
             type: "POST",
-            url: "http://localhost/wp-content/plugins/form/submit.php",
+            url: "http://localhost/wp-content/plugins/better-form/submit.php",
             data: fields,
             success: function() {
                 dataLayer.push({

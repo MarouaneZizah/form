@@ -1155,8 +1155,8 @@ if(!$form) {
             storageManager: {
                 type: 'remote',
                 autosave: false,
-                urlStore: "/wp-content/plugins/form/store-form.php?id=<?php echo $form->ID; ?>",
-                urlLoad: "/wp-content/plugins/form/load-form.php?id=<?php echo $form->ID; ?>",
+                urlStore: "/wp-content/plugins/better-form/store-form.php?id=<?php echo $form->ID; ?>",
+                urlLoad: "/wp-content/plugins/better-form/load-form.php?id=<?php echo $form->ID; ?>",
             },
         });
 

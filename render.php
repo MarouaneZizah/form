@@ -164,7 +164,7 @@ if ($method == 'GET') {
                     ? document.referrer
                     : document.location.href;
 
-                $.post("/wp-content/plugins/form/submit.php", { emails: emails, origin_url: origin_url, data: payload },
+                $.post("/wp-content/plugins/better-form/submit.php", { emails: emails, origin_url: origin_url, data: payload },
                     function(data, status){
                         console.log("Data: " + data + "\nStatus: " + status);
 
