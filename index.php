@@ -13,6 +13,8 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
+include_once(plugin_dir_path(__FILE__).'/functions.php');
+
 function add_form_menu()
 {
     add_menu_page(__('Forms'), __('Forms'), 'edit_themes', 'form-list', 'form_list');
