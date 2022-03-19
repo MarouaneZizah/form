@@ -11,7 +11,7 @@ include_once(ABSPATH.'wp-includes/pluggable.php');
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method == 'GET') {
-    $form_id      = $_GET['id'];
+    $form_id      = $_GET['form_id'];
     $content_post = get_post($form_id);
 
     if (!$content_post) {

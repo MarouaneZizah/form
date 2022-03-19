@@ -16,7 +16,7 @@ echo '<link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'css/script-editor
 echo '<script src="'.plugin_dir_url(__FILE__).'js/axios.min.js"></script>';
 echo '<script src="'.plugin_dir_url(__FILE__).'js/grapes.min.js"></script>';
 
-$id   = $_GET['id'];
+$id   = $_GET['form_id'];
 $form = null;
 
 if ($id) {
