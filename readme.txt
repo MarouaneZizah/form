@@ -1,14 +1,13 @@
 === Better Form ===
+Contributors: marouanezizah
+Donate link:
+Tags: contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
+Requires at least: 5.8
+The Requires PHP: 7.4
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-    Contact form plugin.
-
- - Contributor: marouanezizah
- - Donate link: 
- - Tags: contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
- - Requires at least: 5.8
- - The Requires PHP: 7.4
- - License: GPLv2 or later
- - License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Just another contact form plugin. Simple but flexible.
 
 == Description ==
 
@@ -34,9 +33,14 @@ You will find **Form** menu in your WordPress admin screen.
 
 == Frequently Asked Questions ==
 
-Do you have questions or issues with Better Form? Use these support channels appropriately.
+Do you have questions or issues with Contact Form 7? Use these support channels appropriately.
 
-1. [Support](mailto:zizahmarouane@gmail.com)
+1. [Docs](https://contactform7.com/docs/)
+1. [FAQ](https://contactform7.com/faq/)
+1. [Support forum](https://wordpress.org/support/plugin/contact-form-7/)
+
+[Support](https://contactform7.com/support/)
+
 
 == Changelog ==
 
