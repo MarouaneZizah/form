@@ -26,20 +26,3 @@ add_action( 'parse_request', function( $wp ){
         exit; // and exit
     }
 });
-
-/*function custom_rewrite_basic()
-{
-    add_rewrite_rule('better-form/edit/([0-9]+)/?', 'wp-content/plugins/better-form/form.php?form_id=$matches[1]', 'top');
-    add_rewrite_rule('better-form/view/([0-9]+)/?', 'wp-content/plugins/better-form/render.php?form_id=$matches[1]', 'top');
-}*/
-
-//add_action('init', 'custom_rewrite_basic', 10, 0);
-
-/*function better_form_query_vars($query_vars)
-{
-    $query_vars[] = 'form_id';
-
-    return $query_vars;
-}*/
-
-//add_filter('query_vars', 'better_form_query_vars');

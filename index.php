@@ -4,14 +4,14 @@ Plugin Name: Better Form Plugin
 Plugin URI:
 Description: Form Plugin
 Author: MTT
-Author URI: http://maarouanezizah.com
+Author URI: http://marouanezizah.com
 Version: 0.1
 */
 
-error_reporting(1);
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+//error_reporting(1);
+//ini_set('display_errors', '1');
+//ini_set('display_startup_errors', '1');
+//error_reporting(E_ALL);
 
 include_once(plugin_dir_path(__FILE__).'/functions.php');
 
