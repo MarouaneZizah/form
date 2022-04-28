@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Better Form Plugin
+Plugin Name: Better Form
 Plugin URI:
 Description: Form Plugin
 Author: MTT
